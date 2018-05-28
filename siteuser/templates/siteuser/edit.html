@@ -1,0 +1,17 @@
+{% extends "blockchain_base.html" %}
+{% block title %}Edit profile{% endblock %}
+{% block introduction %}{% endblock introduction %}
+
+{% block content_content %}
+
+<div class="container upload-forms">
+    <h2>Edit your profile</h2>
+    <hr class='broad'>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-sm float-right" type="submit" value="Save">Save</button>
+    </form>
+</div>
+{% endblock %}

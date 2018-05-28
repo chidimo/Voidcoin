@@ -1,0 +1,48 @@
+{% extends "blockchain_base.html" %}
+{% block title %}Log In{% endblock title %}
+
+{% block body %}
+        <h1 class='text-center'><a href="/" title='Return to homepage' style='text-decoration: none'>Blockchain</a></h1>
+        <hr>
+
+<div class="container login-form">
+
+    {% if form.errors %}
+        <p class="text-danger text-center">
+            <strong>Your username and password didn't match</strong>
+        </p>
+        <hr>
+    {% endif %}
+
+    <h2 class='text-center'>Log In</h2>
+
+    {% include "registration/social_logins.html" %}
+    <p>By registering via social account you consent with our <a href="/terms-of-use/" target="_blank">Terms of Use</a> and
+            <a href="/privacy-policy/" target="_blank">Privacy policy</a>.</p>
+
+    <form method="post" action="{% url 'siteuser:login' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form.username }}
+            <span class="fas fa-user" aria-hidden="true"></span>
+        </div>
+
+        <div class="form-group">
+            {{ form.password }}
+            <span class="fas fa-unlock-alt" aria-hidden="true"></span>
+        </div>
+
+        <button class="btn btn-primary btn-sm login-btn" type="submit" value="login">Log In</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary btn-sm join-btn" href="{% url 'siteuser:new' %}" title="Create new account">Sign Up</a>
+            <a class="btn btn-danger btn-sm float-right forgot-password-btn" href="{% url 'siteuser:password_reset' %}" title="Retrieve password">Forgot password?</a>
+        </div>
+    </div>
+</div>
+{% endblock body %}

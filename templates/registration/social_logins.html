@@ -1,0 +1,11 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 social-logins">
+            <a class="google-login" href="{% url 'social:begin' 'google-oauth2' %}?next=/" title="Login/Join with Google"><i class="fab fa-google"></i></a>
+            <a class="twitter-login" href="{% url 'social:begin' 'twitter' %}?next=/" title="Login/Join with Twitter"><i class="fab fa-twitter"></i></a>
+            <a class="yahoo-login" href="{% url 'social:begin' 'yahoo-oauth2' %}?next=/" title="Login/Join with Yahoo"><i class="fab fa-yahoo"></i></a>
+            <a class="facebook-login" href="{% url 'social:begin' 'facebook' %}?next=/" title="Login/Join with Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+    </div>
+</div>

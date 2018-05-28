@@ -1,0 +1,22 @@
+{% extends "blockchain_base.html" %}
+{% block title %}Delete account{% endblock %}
+
+{% block body %}
+
+    <h1 class='text-center'><a href="/" title='Return to homepage' style='text-decoration: none'>Blockchain</a></h1>
+    <hr>
+
+    <div class="container register-forms">
+        <h2 class='text-center'>Delete account</h2>
+        <p class="text-danger">Are you really sure you want to delete your account? This process is irreversible.</p>
+        <p class="text-secondary">Perhaps you might try temporary <a href="{% url 'siteuser:deactivate_account' %}">deactivation</a> it so that you can return to it later.</p>
+        <p>Make sure to disconnect all your social media accounts before deleting</p>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <p>{{ form.password }}</p>
+                <p>{{ form.password.errors }}</p>
+            <button class="btn btn-primary btn-sm register-btn btn-danger" type="submit" value="Delete">Delete my account</button>
+        </form>
+    </div>
+{% endblock body %}

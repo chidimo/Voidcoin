@@ -1,0 +1,35 @@
+{% extends "blockchain_base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+    <h1 class='text-center'><a href="/" title='Return to homepage' style='text-decoration: none'>Blockchain</a></h1>
+    <hr>
+
+    <div class="container register-forms">
+        <h2 class='text-center'>Sign Up</h2>
+
+        {% include "registration/social_logins.html" %}
+        <p>By registering via social account you consent with our <a href="/terms-of-use/" target="_blank">Terms of Use</a> and
+            <a href="/privacy-policy/" target="_blank">Privacy policy</a>.</p>
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <p>{{ form.email }}</p>
+                <p>{{ form.email.errors }}</p>
+                <p>{{ form.screen_name }}</p>
+                <p>{{ form.screen_name.errors }}</p>
+                <p>{{ form.password1 }}</p>
+                <p>{{ form.password1.errors }}</p>
+                <p>{{ form.password2 }}</p>
+                <p>{{ form.password2.errors }}</p>
+                <p>{{ form.agreement }} I consent with Blockchain's
+                    <a href="/terms-of-use/" target="_blank">Terms of Use</a> and
+                    <a href="/privacy-policy/" target="_blank">Privacy policy</a>.</p>
+            <button class="btn btn-primary btn-sm register-btn" type="submit" value="Sign Up">Sign Up</button>
+
+            <div class="g-recaptcha" data-sitekey="6LdJMlsUAAAAAOnPhZaiIm5-TT1mHLdARR8rl4Qa"></div>
+        </form>
+    </div>
+{% endblock body %}

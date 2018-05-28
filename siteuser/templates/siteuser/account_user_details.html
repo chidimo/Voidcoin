@@ -1,0 +1,26 @@
+
+<div class="container song-about">
+    <div class="row">
+        <div class="col-sm-6">
+            <p class="text-secondary">First name: {{ siteuser.first_name }}</p>
+            <p class="text-secondary">Last name: {{ siteuser.last_name }}</p>
+            <p class="text-secondary">Email: <a href="mailto:{{ user.siteuser.user.email }}">{{ siteuser.user.email }}</a></p>
+            <p class="text-secondary">Location: <a href="{% url 'siteuser:siteusers_common_location' siteuser.location %}" title='See others in {{ siteuser.location }}'>{{ siteuser.location }}</a></p>
+        </div>
+
+        <div class="col-sm-6">
+            <p class="text-secondary">Activity: {{ user_songs.count }} songs, {{ user_posts.count }} blog posts,
+                {{ siteuser.score_set.count }} scores, {{ siteuser.midi_set.count }} midis,
+                <a href="{% url 'siteuser:siteuser_comments' siteuser.pk siteuser.slug %}">{{ siteuser.comment_set.count }}</a> comments
+            </p>
+            <p class="text-secondary">Roles:
+                {% for role in siteuser.roles.all %}
+                    <a href="{% url 'siteuser:siteusers_common_roles' role %}" title='See all {{ role.name|title }}s'>{{ role.name|title }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p class="text-secondary">Member since: {{ siteuser.created }}</p>
+            <p class="text-secondary">Last seen: {{ siteuser.user.last_login }}</p>
+        </div>
+    </div>
+</div>

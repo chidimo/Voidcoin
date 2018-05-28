@@ -1,0 +1,32 @@
+{% extends "blockchain_base.html" %}
+{% block title %}Blockchain index{% endblock title %}
+{% block introduction %}{% endblock introduction %}
+{% load static %}
+
+{% block content_content %}
+
+<div class='container siteuser-index-heading'>
+    <div class='row'>
+        <h3 class='float-left'>Blockchain home</h3>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-xs-6 col-sm-6 py-2 my-2 siteuser-index-details">
+            <a href="{% url 'blockchain:generate_wallet' %}">Generate wallet</a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6 col-sm-6 py-2 my-2 siteuser-index-details">
+            <a href="{% url 'blockchain:make_transaction' %}">Make transaction</a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6 col-sm-6 py-2 my-2 siteuser-index-details">
+            <a href="{% url 'blockchain:generate_transaction' %}">Generate transaction</a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6 col-sm-6 py-2 my-2 siteuser-index-details">
+            <a href="{% url 'blockchain:view_transaction' %}">View transaction</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content_content %}
+{% block footer %}{% endblock footer %}

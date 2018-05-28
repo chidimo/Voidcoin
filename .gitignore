@@ -1,0 +1,13 @@
+media/
+.vscode/
+keys
+staticfiles/
+**/__pycache__
+**__pycache__
+geckodriver.log
+blockchain_dev.log
+blockchain_prod.log
+blockchain_stage.log
+htmlcov
+.coveragestaticfiles
+db.sqlite3
