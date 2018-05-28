@@ -8,13 +8,8 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 
-from chain.blockchain_client import Blockchain
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# Instantiate a blockchain
-BLOCKCHAIN = Blockchain()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 def get_env_variable(var_name):

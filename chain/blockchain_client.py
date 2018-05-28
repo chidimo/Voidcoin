@@ -75,7 +75,7 @@ class Blockchain:
         """
         Create SHA-256 hash of a block
         """
-        pass
+        return
 
     # @staticmethod
     def proof_of_work(self):

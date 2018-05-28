@@ -1,8 +1,12 @@
 {% extends "blockchain_base.html" %}
-{% block title %}New transaction{% endblock title %}
+{% block title %}Chain{% endblock title %}
 {% block introduction %}{% endblock introduction %}
 {% load static %}
 
 {% block content_content %}
+
+<p>{{ chain_length }}</p>
+
+{{ chain }}
 
 {% endblock content_content %}
