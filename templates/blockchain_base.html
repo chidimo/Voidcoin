@@ -61,7 +61,21 @@
 			<div class="collapse navbar-collapse navcontent">
 				<ul class="nav navbar-nav lefthand-navigation">
 					<li class="nav-item"><a class="nav-link" href="/" title="Home">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="{% url 'blockchain:transactions_index' %}" title="Home">Transactions</a></li>
+					<li class="nav-item dropdown">
+					    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Wallet</a>
+						<div class="dropdown-menu">
+						    <a class="dropdown-item" href="{% url 'blockchain:generate_wallet' %}">New</a>
+						    <a class="dropdown-item" href="{% url 'blockchain:wallet_detail' %}">View</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+					    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Transactions</a>
+						<div class="dropdown-menu">
+						    <a class="dropdown-item" href="{% url 'blockchain:transactions_index' %}">Index</a>
+						    <a class="dropdown-item" href="{% url 'blockchain:initiate_transaction' %}">Initiate</a>
+						    <a class="dropdown-item" href="{% url 'blockchain:make_transaction' %}">Make</a>
+						</div>
+					</li>
 					<li class="nav-item"><a class="nav-link" href="{% url 'blockchain:node_index' %}" title="Nodes">Nodes</a></li>
 					<li class="nav-item"><a class="nav-link" href="{% url 'blockchain:register_nodes' %}" title="Configure nodes">Configure</a></li>
 				</ul>
@@ -72,10 +86,7 @@
 						<li class="nav-item dropdown">
 						    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">New</a>
 							<div class="dropdown-menu">
-							    <a class="dropdown-item" href="{% url 'song:new' %}"></a>
-							    <a class="dropdown-item" href="{% url 'blog:new' %}">Blog post</a>
-							    <a class="dropdown-item" href="{% url 'request:new' %}">Request</a>
-							    <a class="dropdown-item" href="{% url 'siteuser:new_group' %}">Group</a>
+							    <a class="dropdown-item" href="">Hold</a>
 							</div>
 						</li>
 

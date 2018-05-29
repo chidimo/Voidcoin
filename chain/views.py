@@ -30,32 +30,49 @@ def index(request):
 def transactions_index(request):
     template = 'chain/transactions_index.html'
     context = {}
+    context['blockchain_transactions'] = [transaction for block in BLOCKCHAIN.chain for transaction in block.transactions]
+    context['blockchain'] = BLOCKCHAIN
     return render(request, template, context)
+
+trans = []
+for block in BLOCKCHAIN.chain:
+    for transaction in block.transactions:
+        trans.append(transaction)
 
 def make_transaction(request):
     # template = 'chain/make_transaction.html'
     # context = {}
     messages.success(request, "Transaction completed successfully")
-    return redirect(reverse('blockchain:view_transaction'))
+    return redirect(reverse('blockchain:transactions_index'))
 
-def view_transaction(request):
-    template = 'chain/view_transaction.html'
+def transaction_detail(request):
+    template = 'chain/transactions_index.html'
     context = {}
     return render(request, template, context)
 
 def generate_wallet(request):
     random_gen = Crypto.Random.new().read
-    private_key = RSA.generate(1024, random_gen)
-    public_key = private_key.publickey()
-    context = {
-        'private_key' : binascii.hexlify(private_key.exportKey(format='DER')).decode('ascii'),
-        'public_key' : binascii.hexlify(public_key.exportKey(format='DER')).decode('ascii')
-        }
-    # return redirect(reverse('blockchain:index'))
-    messages.success(request, "New wallet generated successfully")
-    return HttpResponse(json.dumps(context), content_type='application/json')
+    pr_key = RSA.generate(1024, random_gen)
+    pub_key = pr_key.publickey()
 
-# @require_POST
+    private_key = binascii.hexlify(pr_key.exportKey(format='DER')).decode('ascii')
+    public_key = binascii.hexlify(pub_key.exportKey(format='DER')).decode('ascii')
+
+    context = {'private_key' : private_key,'public_key' : public_key}
+
+    messages.success(request, "New wallet generated successfully")
+    messages.success(request, "Public key: {}".format(public_key))
+    messages.success(request, "Private key: {}".format(private_key))
+    messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
+
+    return redirect('blockchain:wallet_detail')
+    # return JsonResponse(context, status=201)
+
+def wallet_detail(request):
+    template = 'chain/wallet_detail.html'
+    context = {}
+    return render(request, template, context)
+
 def initiate_transaction(request):
     template = 'chain/initiate_transaction.html'
     context = {}

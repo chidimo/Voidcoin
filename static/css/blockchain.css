@@ -126,6 +126,10 @@ p, ol.terms-of-use li, ol.privacy-policy li, ol.help-page li {
     font-family: 'Sunflower', sans-serif;
 }
 
+p.message-paragraph {
+    word-break: break-all;
+}
+
 a:hover {
    text-decoration: none;
 }
