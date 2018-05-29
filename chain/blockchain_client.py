@@ -1,6 +1,7 @@
 from uuid import uuid4
 from time import time
 from collections import OrderedDict
+from urllib.parse import urlparse
 
 import binascii
 import Crypto
@@ -10,8 +11,6 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 
 MINING_DIFFICULTY = 1
-
-# import requests
 
 class Transaction:
     def __init__(self, sender_address, sender_private_key, recipient_address, amount):
@@ -50,15 +49,33 @@ class Blockchain:
 
     def register_node(self, node_url):
         """
-        Add new node to the list of nodes
+        Add new node to the nodes dictionary
+
+        Parameters
+        -----------
+        node_url : str
+            Node url e.g http://127.0.0.1
         """
-        self.nodes[node_url] = time()
-        # self.nodes.add([node_url, time()])
+
+        parsed_url = urlparse(node_url)
+        if parsed_url.netloc:
+            self.nodes[parsed_url.netloc] = time()
+        elif parsed_url.path:
+            self.nodes[parsed_url.path] = time()
+        else:
+            raise ValueError("Invalid url")
 
     def verify_transaction_signature(self, sender_address, signature, transaction):
         """
-        Verifies that provided signature corresponds to transaction signed by
-        the public key (sender address)
+        Verifies that provided signature is actually signed by sender_address (public key)
+
+        Parameters
+        -----------
+
+        Returns
+        ---------
+        bool
+            True if transaction is valid (signature is signed by sender_address). False otherwise.
         """
         pass
 
@@ -97,6 +114,16 @@ class Blockchain:
     def valid_chain(self, chain):
         """
         Check whether blockchain is valid
+
+        Parameters
+        -----------
+        chain : Blockchain
+            A blockchain instance
+
+        Returns
+        ---------
+        bool :
+            Return True if valid. False otherwise.
         """
         pass
 
@@ -106,3 +133,6 @@ class Blockchain:
         by replacing our chain with the longest one in the network.
         """
         pass
+
+    def last_block(self):
+        return self.chain[-1]

@@ -71,8 +71,9 @@
 					    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Transactions</a>
 						<div class="dropdown-menu">
 						    <a class="dropdown-item" href="{% url 'blockchain:transactions_index' %}">Index</a>
+						    <a class="dropdown-item" href="{% url 'blockchain:transactions_destined_for_next_block' %}">Next block</a>
 						    <a class="dropdown-item" href="{% url 'blockchain:initiate_transaction' %}">Initiate</a>
-						    <a class="dropdown-item" href="{% url 'blockchain:make_transaction' %}">Make</a>
+						    <a class="dropdown-item" href="{% url 'blockchain:initiate_and_verify_transaction' %}">Initiate+</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">

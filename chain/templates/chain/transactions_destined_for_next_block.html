@@ -1,0 +1,44 @@
+{% extends "voidcoin_base.html" %}
+{% block title %}Transactions for next block{% endblock title %}
+{% block introduction %}{% endblock introduction %}
+{% load static %}
+
+{% block content_content %}
+
+<div class='container siteuser-index-heading'>
+    <div class='row'>
+        <h3 class='float-left'>Transactions for next block</h3>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <caption>Transactions for next block</caption>
+            <tr>
+                <th>S/No.</th>
+                <th>Recipient</th>
+                <th>Sender</th>
+                <th>Amount</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transaction in blockchain_transactions %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ transaction.recipient_address }}</td>
+                <td>{{ transaction.sender_address }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.timestamp }}</td>
+            </tr>
+        {% empty %}
+            <p>No pending transactions</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content_content %}
+{% block footer %}{% endblock footer %}
+
