@@ -14,6 +14,7 @@ from Crypto.PublicKey import RSA
 from .blockchain_client import Transaction, Blockchain
 from .forms import InitiateTransactionForm, AcceptTransactionForm, NodeRegistrationForm
 
+from .models import UserKeys
 # Instantiate a blockchain
 # BLOCKCHAIN = settings.BLOCKCHAIN
 BLOCKCHAIN = Blockchain()
@@ -64,6 +65,10 @@ def generate_wallet(request):
     messages.success(request, "Public key: {}".format(public_key))
     messages.success(request, "Private key: {}".format(private_key))
     messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
+
+    # save credentials to database
+    # UserKeys.objects.create(
+    #     user=request.user.siteuser, private_key=private_key, public_key=public_key)
 
     return redirect('blockchain:wallet_detail')
     # return JsonResponse(context, status=201)
