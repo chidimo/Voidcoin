@@ -11,13 +11,13 @@ CustomUser = get_user_model()
 
 def superuser():
     try:
-        su = CustomUser.objects.create_user(email='admin@blockchain.net', password='dwarfstar')
+        su = CustomUser.objects.create_user(email='admin@voidcoin.net', password='dwarfstar')
         su.is_superuser = True
         su.is_admin = True
         su.is_active = True
         su.save()
     except IntegrityError:
-        su = CustomUser.objects.get(email='admin@blockchain.net')
+        su = CustomUser.objects.get(email='admin@voidcoin.net')
     try:
         SiteUser.objects.create(
             user=su,
