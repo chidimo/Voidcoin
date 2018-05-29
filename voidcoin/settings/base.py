@@ -1,5 +1,5 @@
 """
-Django settings for blockchain project. https://docs.djangoproject.com/en/2.0/ref/settings/
+Django settings for voidcoin project. https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
@@ -21,10 +21,10 @@ def get_env_variable(var_name):
         raise ImproperlyConfigured(error_msg)
 
 ALLOWED_HOSTS = ['*']
-ROOT_URLCONF = 'blockchain.urls'
+ROOT_URLCONF = 'voidcoin.urls'
 # SECRET_KEY = '-yj%bb6h89%&)&(=%didix35(gaag1&f*$73+=h5b3=v-1uy*p'
 SECRET_KEY = get_env_variable("SECRET_KEY")
-WSGI_APPLICATION = 'blockchain.wsgi.application'
+WSGI_APPLICATION = 'voidcoin.wsgi.application'
 INTERNAL_IPS = ('127.0.0.1', 'localhost')
 
 SITE_ID = 1

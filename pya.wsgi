@@ -1,12 +1,12 @@
 import os
 import sys
 
-path = '/home/parousia/blockchain'
+path = '/home/parousia/voidcoin'
 if path not in sys.path:
     sys.path.append(path)
 
 # set environment variables
-os.environ['DJANGO_SETTINGS_MODULE'] = 'blockchain.settings.prod'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'voidcoin.settings.prod'
 os.environ['DJANGO_ALLOWED_HOSTS'] = 'www.parousia.pythonanywhere.com'
 os.environ['SECRET_KEY'] = '-yj%bb6h89%&)&(=%didix35(gaag1&f*$73+=h5b3=v-1uy*p'
 os.environ['DJANGO_ADMIN_URL'] = '/admin/'

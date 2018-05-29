@@ -5,9 +5,9 @@ staticfiles/
 **/__pycache__
 **__pycache__
 geckodriver.log
-blockchain_dev.log
-blockchain_prod.log
-blockchain_stage.log
+voidcoin_dev.log
+voidcoin_prod.log
+voidcoin_stage.log
 htmlcov
 .coveragestaticfiles
 db.sqlite3
