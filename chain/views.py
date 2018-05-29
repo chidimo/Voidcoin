@@ -229,14 +229,17 @@ def register_nodes(request):
         form = NodeRegistrationForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            node_urls = data['node_urls']
+            node_urls = data['node_urls'].split(',')
 
             for node_url in node_urls:
                 try:
                     BLOCKCHAIN.register_node(node_url)
+                    continue
                 except ValueError:
                     messages.error(request, "Invalid node url: {}".format(node_url))
                     return redirect('blockchain:node_index')
+            messages.success(request, "Node urls added successfully")
+            return redirect('blockchain:node_index')
         else:
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : NodeRegistrationForm()})
