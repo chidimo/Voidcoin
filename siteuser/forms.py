@@ -95,11 +95,10 @@ class SiteUserRegistrationForm(forms.Form):
 class SiteUserEditForm(forms.ModelForm):
     class Meta:
         model = SiteUser
-        fields = ["first_name", "last_name"]
+        fields = ["screen_name",]
 
         widgets = {
-            "first_name" : forms.TextInput(attrs={'class' : 'form-control', "placeholder" : "First name"}),
-            "last_name" : forms.TextInput(attrs={'class' : 'form-control', "placeholder" : "Last name"}),
+            "screen_name" : forms.TextInput(attrs={'class' : 'form-control', "placeholder" : "Screen name"}),
         }
 
 class PassWordGetterForm(forms.Form):

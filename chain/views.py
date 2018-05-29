@@ -1,5 +1,7 @@
 import json
+from decimal import Decimal
 
+from django.db.models import Sum
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.conf import settings
@@ -14,13 +16,13 @@ from Crypto.PublicKey import RSA
 from .blockchain_client import Transaction, Blockchain
 from .forms import InitiateTransactionForm, AcceptTransactionForm, NodeRegistrationForm
 
-from .models import UserKeys
+from .models import BlockAccount
+
 # Instantiate a blockchain
-# BLOCKCHAIN = settings.BLOCKCHAIN
 BLOCKCHAIN = Blockchain()
 MINING_SENDER = ''
-MINING_REWARD = ''
-print("**********", BLOCKCHAIN)
+MINING_REWARD = Decimal('0.25')
+COINBASE = Decimal('1000.00')
 
 def index(request):
     template = 'chain/index.html'
@@ -62,15 +64,24 @@ def generate_wallet(request):
     context = {'private_key' : private_key,'public_key' : public_key}
 
     messages.success(request, "New wallet generated successfully")
-    messages.success(request, "Public key: {}".format(public_key))
-    messages.success(request, "Private key: {}".format(private_key))
     messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
 
-    # save credentials to database
-    # UserKeys.objects.create(
-    #     user=request.user.siteuser, private_key=private_key, public_key=public_key)
+    # get balance of coins in the system
+    sum_coins = BlockAccount.objects.aggregate(total_balance=Sum('balance'))['total_balance']
 
-    return redirect('blockchain:wallet_detail')
+    # If no instance has been created, the balance is None
+    if sum_coins == None:
+        sum_coins = Decimal('0.00')
+    if sum_coins < COINBASE:
+        balance = Decimal('10.00')
+    else:
+        balance = Decimal('0.00')
+
+    # save credentials to database
+    BlockAccount.objects.create(
+        owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
+
+    return redirect('siteuser:account_management')
     # return JsonResponse(context, status=201)
 
 def wallet_detail(request):
@@ -79,6 +90,7 @@ def wallet_detail(request):
     return render(request, template, context)
 
 def initiate_transaction(request):
+    user = request.user
     template = 'chain/initiate_transaction.html'
     context = {}
 
@@ -94,7 +106,7 @@ def initiate_transaction(request):
             transaction = Transaction(sender_address, sender_private_key, recipient_address, amount_to_send)
             context['transaction'] = transaction.to_dict()
             context['signature'] = transaction.sign_transaction()
-            messages.success(request, "Transaction generated successfully")
+            messages.success(request, "Transaction initiated successfully")
             return JsonResponse(context)
         else:
             return render(request, template, {'form' : form})
@@ -113,7 +125,7 @@ def validate_and_block_transaction(request):
             amount_to_receive = data['amount_to_receive']
             signature = data['signature']
 
-            required_values = [sender_address=='', recipient_address=='', amount_to_receive=='', signature=='']
+            required_values = [sender_address=='', recipient_address=='', amount_to_receive==None, signature=='']
             if any(required_values):
                 return HttpResponseBadRequest("Missing values", status=400)
 
@@ -129,11 +141,12 @@ def validate_and_block_transaction(request):
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : AcceptTransactionForm()})
 
-def transactions_in_block(request):
+def block_detail(request, index):
     """Get list of transactions in a block"""
     template = 'chain/get_transactions.html'
     context = {}
-    context['transactions'] = BLOCKCHAIN.transactions
+    block = BLOCKCHAIN.chain[index]
+    context['block'] = block
     return render(request, template, context)
     # return JsonResponse(context, status=200)
 

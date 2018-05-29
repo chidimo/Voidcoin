@@ -9,7 +9,6 @@ app_name = "siteuser"
 
 urlpatterns = [
     path('', views.SiteUserIndex.as_view(), name="index"),
-    path('location-<str:location>/', views.SiteUserCommonLocation.as_view(), name="siteusers_common_location"),
     path("new/", views.new_siteuser, name="new"),
     path("delete-account/", views.delete_account, name="delete_account"),
     path("deactivate-account/", views.deactivate_account, name="deactivate_account"),

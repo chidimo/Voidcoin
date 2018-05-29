@@ -126,7 +126,7 @@ p, ol.terms-of-use li, ol.privacy-policy li, ol.help-page li {
     font-family: 'Sunflower', sans-serif;
 }
 
-p.message-paragraph {
+p.message-paragraph, p.key-display {
     word-break: break-all;
 }
 

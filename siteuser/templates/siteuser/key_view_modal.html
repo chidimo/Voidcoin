@@ -1,0 +1,20 @@
+<!--modal start-->
+<div class="modal fade" id="keyViewModal{{ each.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="keyViewModalLabel">Keys</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="key-display"><b>Balance:</b> {{ each.balance }}</p>
+                <p class="key-display"><b>Public key:</b> {{ each.public_key }}</p>
+                <p class="key-display"><b>Private key:</b> {{ each.private_key }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end-->

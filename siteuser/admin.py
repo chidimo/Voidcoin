@@ -8,7 +8,7 @@ from .models import CustomUser, SiteUser
 from .forms import UserChangeForm, UserCreationForm
 
 class SiteUserAdmin(admin.ModelAdmin):
-    list_display = ("screen_name", "user", "first_name", "last_name", "slug")
+    list_display = ("screen_name", "user", "slug")
 
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm

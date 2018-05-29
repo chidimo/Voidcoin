@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import BlockAccount
+
+class BlockAccountAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'used', 'balance', 'private_key', 'public_key')
+
+admin.site.register(BlockAccount, BlockAccountAdmin)

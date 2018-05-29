@@ -1,7 +1,5 @@
 """Models"""
 
-import uuid
-
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -62,8 +60,6 @@ class SiteUser(TimeStampedModel):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = AutoSlugField(set_using="screen_name")
     screen_name = models.CharField(max_length=20, unique=True)
-    first_name = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         ordering = ['screen_name']

@@ -30,7 +30,7 @@
         {% for block in blockchain.chain %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ block.index }}</td>
+                <td><a href="{% url 'blockchain:block_detail' %} block.index">{{ block.index }}</a></td>
                 {% for transaction in block.transactions %}
                     <td>{{ transaction.recipient_address }}</td>
                     <td>{{ transaction.sender_address }}</td>
