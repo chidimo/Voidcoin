@@ -231,7 +231,7 @@ def register_nodes(request):
             data = form.cleaned_data
             node_urls = data['node_urls']
 
-            for node_url in set(node_urls):
+            for node_url in node_urls:
                 try:
                     BLOCKCHAIN.register_node(node_url)
                 except ValueError:
