@@ -235,7 +235,7 @@ def register_nodes(request):
                 try:
                     BLOCKCHAIN.register_node(node_url)
                 except ValueError:
-                    messages.success(request, "Invalid node url: {}".format(node_url))
+                    messages.error(request, "Invalid node url: {}".format(node_url))
                     return redirect('blockchain:node_index')
         else:
             return render(request, template, {'form' : form})
