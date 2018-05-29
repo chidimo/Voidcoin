@@ -1,10 +1,79 @@
 {% extends "blockchain_base.html" %}
-{% block title %}Chain object{% endblock title %}
+{% block title %}Frontend{% endblock title %}
 {% block introduction %}{% endblock introduction %}
-{% load static %}
 
 {% block content_content %}
+<div class='container siteuser-index-heading'>
+    <div class='row'>
+        <h3 class='float-left'>Frontend</h3>
+    </div>
+</div>
 
-{{ blockchain }}
+<h4>Transactions to be included in next block</h4>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <caption>Next block transactions</caption>
+            <tr>
+                <th>S/No.</th>
+                <th>Recipient</th>
+                <th>Sender</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transaction in next_block_transactions %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ transaction.sender_address }}</td>
+                <td>{{ transaction.recipient_address }}</td>
+                <td>{{ transaction.amount }}</td>
+            </tr>
+        {% empty %}
+            <p>No pending transaction</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<span class='float-right song-icons'>
+    <a class="btn btn-sm btn-primary icon-buttons" href="{% url 'blockchain:mine' %}" title="Mine block">Mine</a>
+</span>
+<hr>
+
+<h4>Transactions on the blockchain</h4>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <caption>Blockchain transactions</caption>
+            <tr>
+                <th>S/No.</th>
+                <th>Recipient</th>
+                <th>Sender</th>
+                <th>Amount</th>
+                <th>Timestamp</th>
+                <th>Block</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for block in blockchain.chain %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                {% for transaction in block.transactions %}
+                    <td>{{ transaction.recipient_address }}</td>
+                    <td>{{ transaction.sender_address }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                {% endfor %}
+                <td>{{ block.index }}</td>
+            </tr>
+        {% empty %}
+            <p>No blocks on the blockchain</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock content_content %}

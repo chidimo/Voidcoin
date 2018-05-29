@@ -14,5 +14,9 @@ urlpatterns = [
     path('transactions/validate/', views.validate_and_block_transaction, name="validate_and_block_transaction"),
     path('transactions/view/', views.view_transaction, name="view_transaction"),
     path('transactions/get/', views.transactions_in_block, name="transactions_in_block"),
+    path('block/mine/', views.mine, name="mine"),
+    path('nodes/index/', views.node_index, name="node_index"),
+    path('nodes/register/', views.register_nodes, name="register_nodes"),
+    path('nodes/resolve/', views.consensus, name="consensus"),
 ]
 

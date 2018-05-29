@@ -1,0 +1,36 @@
+{% extends "blockchain_base.html" %}
+{% block title %}Nodes{% endblock title %}
+{% block introduction %}{% endblock introduction %}
+
+{% block content_content %}
+
+<div class='container siteuser-index-heading'>
+    <div class='row'>
+        <h3 class='float-left'>Nodes</h3>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <caption>Nodes</caption>
+            <tr>
+                <th>S/No.</th>
+                <th>Node</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for node in nodes %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ node }}</td>
+            </tr>
+        {% empty %}
+            <p>No nodes</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content_content %}
+{% block footer %}{% endblock footer %}

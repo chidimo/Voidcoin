@@ -170,22 +170,6 @@ th, td {
     white-space: nowrap;
 }
 
-/*SONG FILTER BLOCK*/
-
-.filter-block {
-  max-width:400px;
-  margin: auto;
-  background: #e9ecef;
-  margin-top: 0.5rem;
-  padding: .5rem 1rem 3rem 1rem;
-  border-radius: .15rem;
-  border: 1px solid mintcream;
-}
-
-.filter-block .btn-sm {
-  margin-top: 0.5rem;
-}
-
 /*UPLOAD FORMS*/
 
 .upload-forms {
@@ -398,7 +382,6 @@ input#id_password {
     border-radius: .15rem;
 }
 
-
 /*FOOTER*/
 
 .large-print {
@@ -517,4 +500,11 @@ ul.errorlist {
     border: 1px solid #aaa;
     border-radius: .15rem;
     box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
+}
+
+.song-detail-header {
+    background: #f2f3fb;
+    border: .6px solid midnightblue;
+    margin: .5rem 0;
+    border-radius: .15rem;
 }

@@ -1,4 +1,5 @@
 from uuid import uuid4
+from time import time
 from collections import OrderedDict
 
 import binascii
@@ -13,11 +14,12 @@ MINING_DIFFICULTY = 1
 # import requests
 
 class Transaction:
-    def __init__(self, sender_address, sender_private_key, recipient_address, value):
+    def __init__(self, sender_address, sender_private_key, recipient_address, amount):
         self.sender_address = sender_address
         self.sender_private_key = sender_private_key
         self.recipient_address = recipient_address
-        self.value = value
+        self.timestamp = time()
+        self.amount = amount
 
     def __getattr__(self, attr):
         return self.data[attr]
@@ -26,7 +28,7 @@ class Transaction:
         return OrderedDict(
             {'sender_address': self.sender_address,
             'recipient_address': self.recipient_address,
-            'value' : self.value})
+            'amount' : self.amount})
 
     def sign_transaction(self):
         """Sign the transaction with sender's private key"""
@@ -40,6 +42,7 @@ class Blockchain:
         self.transactions = []
         self.chain = []
         self.nodes = set()
+        self.nodes = OrderedDict()
         # Random number to use as node id
         self.node_id = str(uuid4()).replace('-', '')
         # Genesis block
@@ -49,7 +52,8 @@ class Blockchain:
         """
         Add new node to the list of nodes
         """
-        pass
+        self.nodes[node_url] = time()
+        # self.nodes.add([node_url, time()])
 
     def verify_transaction_signature(self, sender_address, signature, transaction):
         """
@@ -58,7 +62,7 @@ class Blockchain:
         """
         pass
 
-    def submit_transaction(self, sender_address, recipient_address, value, signature):
+    def submit_transaction(self, sender_address, recipient_address, amount, signature):
         """
         Add verified transaction to the transaction array
         """
@@ -66,7 +70,7 @@ class Blockchain:
 
     def create_block_and_add_to_chain(self, nonce, previous_hash):
         """
-        Add a block of transactions to the blockchain
+        Add a block of transactions to the chain
         """
         pass
 
@@ -86,7 +90,7 @@ class Blockchain:
 
     def valid_proof(self, transactions, last_hash, nonce, difficulty=MINING_DIFFICULTY):
         """
-        Check whether hash value satisfies mining conditions. This function is used within the proof_of_work function.
+        Check whether hash amount satisfies mining conditions. This function is used within the proof_of_work function.
         """
         pass
 

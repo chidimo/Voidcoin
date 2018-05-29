@@ -12,7 +12,7 @@ from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
 from .blockchain_client import Transaction, Blockchain
-from .forms import InitiateTransactionForm, AcceptTransactionForm
+from .forms import InitiateTransactionForm, AcceptTransactionForm, NodeRegistrationForm
 
 # Instantiate a blockchain
 # BLOCKCHAIN = settings.BLOCKCHAIN
@@ -20,6 +20,12 @@ BLOCKCHAIN = Blockchain()
 MINING_SENDER = ''
 MINING_REWARD = ''
 print("**********", BLOCKCHAIN)
+
+def index(request):
+    template = 'chain/index.html'
+    context = {}
+    context['blockchain'] = BLOCKCHAIN
+    return render(request, template, context)
 
 def transactions_index(request):
     template = 'chain/transactions_index.html'
@@ -72,12 +78,6 @@ def initiate_transaction(request):
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : InitiateTransactionForm()})
 
-def index(request):
-    template = 'chain/index.html'
-    context = {}
-    context['blockchain'] = BLOCKCHAIN
-    return render(request, template, context)
-
 def validate_and_block_transaction(request):
     """Check if transaction is valid, accept it and add it to the block"""
     template = 'chain/validate_and_block_transaction.html'
@@ -94,7 +94,7 @@ def validate_and_block_transaction(request):
             required_values = [sender_address=='', recipient_address=='', amount_to_receive=='', signature=='']
             if any(required_values):
                 return HttpResponseBadRequest("Missing values", status=400)
-            
+
             # create new transaction
             transaction_result = BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_receive, signature)
             if transaction_result == False:
@@ -137,10 +137,55 @@ def mine(request):
     previous_hash = BLOCKCHAIN.hash(last_block)
     block = BLOCKCHAIN.create_block_and_add_to_chain(nonce, previous_hash)
 
-    context['message'] = "New block forged and added to chain"   
+    context['message'] = "New block forged and added to chain"
     context['block_number'] = block['block_number']
     context['transactions'] = block['transactions']
     context['nonce'] = block['nonce']
     context['previous_hash'] = block['previous_hash']
 
     return render(request, template, context)
+
+def register_nodes(request):
+    """Register a new node"""
+    template = 'chain/node_register.html'
+    context = {}
+
+    if request.method == 'POST':
+        form = NodeRegistrationForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            node_urls = data['node_urls']
+
+            for node_url in node_urls:
+                BLOCKCHAIN.register_node(node_url)
+            msg = "New nodes have been added"
+            messages.success(request, msg)
+            return redirect('blockchain:node_index')
+        else:
+            return render(request, template, {'form' : form})
+    return render(request, template, {'form' : NodeRegistrationForm()})
+
+def node_index(request):
+    template = 'chain/node_index.html'
+    context = {}
+    context['nodes'] = BLOCKCHAIN.nodes
+    return render(request, template, context)
+
+def consensus(request):
+    template = 'chain/nodes_resolve.html'
+    context = {}
+    replaced = BLOCKCHAIN.resolve_conflicts()
+
+    if replaced:
+        msg = 'Our chain was replaced'
+        context['msg'] = msg
+        context['chain'] = BLOCKCHAIN.chain
+        messages.error(request, msg)
+    else:
+        msg = 'Our chain was preferred'
+        context['msg'] = msg
+        context['chain'] = BLOCKCHAIN.chain
+        messages.success(request, msg)
+    # return redirect('blockchain:node_index')
+    return render(request, template, context)
+
