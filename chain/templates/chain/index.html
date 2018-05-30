@@ -17,18 +17,18 @@
             <caption>Next block transactions</caption>
             <tr>
                 <th>S/No.</th>
-                <th>Recipient</th>
-                <th>Sender</th>
                 <th>Amount</th>
+                <th>Sender</th>
+                <th>Recipient</th>
             </tr>
         </thead>
         <tbody>
-        {% for transaction in next_block_transactions %}
+        {% for transaction in pending_transactions %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ transaction.sender_address }}</td>
-                <td>{{ transaction.recipient_address }}</td>
                 <td>{{ transaction.amount }}</td>
+                <td title="{{ transaction.sender_address }}">{{ transaction.sender_address|truncatechars:10 }}</td>
+                <td title="{{ transaction.recipient_address }}">{{ transaction.recipient_address|truncatechars:10 }}</td>
             </tr>
         {% empty %}
             <p>No pending transaction</p>
@@ -37,40 +37,38 @@
     </table>
 </div>
 
-<span class='float-right song-icons'>
-    <a class="btn btn-sm btn-primary icon-buttons" href="{% url 'blockchain:mine' %}" title="Mine block">Mine</a>
-</span>
 <hr>
 
-<h4>Transactions on the blockchain</h4>
+<h4>Blocks on the chain</h4>
 
 <div class="table-responsive">
     <table class="table">
         <thead class="thead-dark">
-            <caption>Blockchain transactions</caption>
+            <caption>Blocks</caption>
             <tr>
-                <th>S/No.</th>
-                <th>Recipient</th>
-                <th>Sender</th>
-                <th>Amount</th>
+                <th>Block number</th>
+                <th>nonce</th>
+                <th>Previous hash</th>
                 <th>Timestamp</th>
-                <th>Block</th>
+                <th>Transactions</th>
             </tr>
         </thead>
         <tbody>
-        {% for block in blockchain.chain %}
+        {% for block in chain %}
             <tr>
-                <td>{{ forloop.counter }}</td>
-                {% for transaction in block.transactions %}
-                    <td>{{ transaction.recipient_address }}</td>
-                    <td>{{ transaction.sender_address }}</td>
-                    <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.timestamp }}</td>
+                {% for key, value in block.items %}
+                    {% if key == 'transactions' %}
+                        <td title="{{ value }}">{{ value|truncatechars:10 }}</td>
+                    {% elif key == 'block_number' %}
+                        <td><a href="{% url 'blockchain:block_detail' value %}">{{ value }}</a></td>
+                    {% else %}
+                        <td>{{ value }}</td>
+                    {% endif %}
+
                 {% endfor %}
-                <td>{{ block.index }}</td>
             </tr>
         {% empty %}
-            <p>No blocks on the blockchain</p>
+            <p>No blocks on the chain</p>
         {% endfor %}
         </tbody>
     </table>

@@ -17,20 +17,20 @@
             <caption>Transactions for next block</caption>
             <tr>
                 <th>S/No.</th>
-                <th>Recipient</th>
-                <th>Sender</th>
                 <th>Amount</th>
                 <th>Timestamp</th>
+                <th>Sender</th>
+                <th>Recipient</th>
             </tr>
         </thead>
         <tbody>
-        {% for transaction in blockchain_transactions %}
+        {% for transaction in transactions %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ transaction.recipient_address }}</td>
-                <td>{{ transaction.sender_address }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td>{{ transaction.timestamp }}</td>
+                <td>{{ transaction.sender_address }}</td>
+                <td>{{ transaction.recipient_address }}</td>
             </tr>
         {% empty %}
             <p>No pending transactions</p>

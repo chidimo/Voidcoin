@@ -7,70 +7,32 @@
 
 <div class='container siteuser-index-heading'>
     <div class='row'>
-        <h3 class='float-left'>Transactions</h3>
+        <h3 class='float-left'>Transactions on the blockchain</h3>
     </div>
 </div>
 
-<h4>Transactions on the blockchain - CHAIN</h4>
-
 <div class="table-responsive">
     <table class="table">
         <thead class="thead-dark">
-            <caption>Blockchain transactions</caption>
+            <caption>Transactions on the blockchain</caption>
             <tr>
                 <th>S/No.</th>
-                <th>Block number</th>
-                <th>Recipient</th>
-                <th>Sender</th>
                 <th>Amount</th>
-                <th>Timestamp</th>
+                <th>Sender</th>
+                <th>Recipient</th>
             </tr>
         </thead>
         <tbody>
-        {% for block in blockchain.chain %}
+        {% for transaction in transactions %}
+
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{% url 'blockchain:block_detail' %} block.index">{{ block.index }}</a></td>
-                {% for transaction in block.transactions %}
-                    <td>{{ transaction.recipient_address }}</td>
-                    <td>{{ transaction.sender_address }}</td>
-                    <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.timestamp }}</td>
-                {% endfor %}
-            </tr>
-        {% empty %}
-            <p>No blocks on the chain</p>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<hr>
-<h4>Transactions on the blockchain</h4>
-
-<div class="table-responsive">
-    <table class="table">
-        <thead class="thead-dark">
-            <caption>Blockchain transactions</caption>
-            <tr>
-                <th>S/No.</th>
-                <th>Recipient</th>
-                <th>Sender</th>
-                <th>Amount</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for transaction in blockchain_transactions %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ transaction.recipient_address }}</td>
-                <td>{{ transaction.sender_address }}</td>
                 <td>{{ transaction.amount }}</td>
-                <td>{{ transaction.timestamp }}</td>
+                <td title="{{ transaction.sender_address }}">{{ transaction.sender_address|truncatechars:10 }}</td>
+                <td title="{{ transaction.recipient_address }}">{{ transaction.recipient_address|truncatechars:10 }}</td>
             </tr>
         {% empty %}
-            <p>No blocks on the blockchain</p>
+            <p>No pending transaction</p>
         {% endfor %}
         </tbody>
     </table>

@@ -1,8 +1,8 @@
 from django.db.models import Sum
 from django.shortcuts import render, redirect
-from django.http import  JsonResponse, HttpResponseBadRequest#, HttpResponse
+from django.http import  JsonResponse#, HttpResponseBadRequest, HttpResponse
 # from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.conf import settings
+from django.conf import settings
 from django.contrib import messages
 # from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -12,18 +12,19 @@ import Crypto.Random
 # from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
-from .blockchain_client import Transaction, Blockchain, MINING_SENDER, MINING_REWARD, COINBASE
-from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, AcceptTransactionForm, NodeRegistrationForm, EditAliasForm
+from .blockchain_client import Transaction, COINBASE
+from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, NodeRegistrationForm, EditAliasForm
 
 from .models import BlockAccount
 
 # Instantiate a blockchain
-BLOCKCHAIN = Blockchain()
+BLOCKCHAIN = settings.BLOCKCHAIN
 
 def index(request):
     template = 'chain/index.html'
     context = {}
-    context['blockchain'] = BLOCKCHAIN
+    context['pending_transactions'] = BLOCKCHAIN.transactions
+    context['chain'] = BLOCKCHAIN.chain
     return render(request, template, context)
 
 def generate_wallet(request):
@@ -35,7 +36,7 @@ def generate_wallet(request):
     private_key = binascii.hexlify(pr_key.exportKey(format='DER')).decode('ascii')
     public_key = binascii.hexlify(pub_key.exportKey(format='DER')).decode('ascii')
 
-    context = {'private_key' : private_key,'public_key' : public_key}
+    # context = {'private_key' : private_key,'public_key' : public_key}
     messages.success(request, "New wallet generated successfully")
     messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
 
@@ -51,7 +52,7 @@ def generate_wallet(request):
         balance = 0.00
 
     # save credentials to database
-    BlockAccount.objects.create(
+    BlockAccount.objects.create(alias="Rename (30 characters)",
         owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
 
     return redirect('siteuser:account_management')
@@ -60,8 +61,7 @@ def transactions_index(request):
     """View all transactions on the blockchain"""
     template = 'chain/transactions_index.html'
     context = {}
-    context['blockchain_transactions'] = [transaction for block in BLOCKCHAIN.chain for transaction in block.transactions]
-    context['blockchain'] = BLOCKCHAIN
+    context['transactions'] = [transaction for block in BLOCKCHAIN.chain for transaction in block['transactions']]
     return render(request, template, context)
 
 def transactions_destined_for_next_block(request):
@@ -100,7 +100,8 @@ def transaction_auth_user(request):
                 messages.success(request, "Transaction signature verified successfully")
             else:
                 messages.error(request, "Transaction rejected")
-            return redirect('siteuser:account_management')
+            return redirect('blockchain:transactions_destined_for_next_block') # change later
+            # return redirect('siteuser:account_management')
         else:
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : InitiateTransactionAuthUserForm(user=user)})
@@ -129,73 +130,28 @@ def transaction_anon(request):
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : InitiateTransactionForm()})
 
-def validate_and_block_transaction(request):
-    """Check if transaction is valid, accept it and add it to the block"""
-    template = 'chain/validate_and_block_transaction.html'
-
-    if request.method == 'POST':
-        form = AcceptTransactionForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            sender_address = data['sender_address']
-            recipient_address = data['recipient_address']
-            amount_to_receive = data['amount_to_receive']
-            signature = data['signature']
-
-            required_values = [sender_address=='', recipient_address=='', amount_to_receive==None, signature=='']
-            if any(required_values):
-                return HttpResponseBadRequest("Missing values", status=400)
-
-            # create new transaction
-            transaction_result = BLOCKCHAIN.add_transaction_to_current_array(sender_address, recipient_address, amount_to_receive, signature)
-            if transaction_result == False:
-                context = {'message': 'Invalid Transaction!'}
-                return JsonResponse(context, status=406)
-            else:
-                context = {'message': 'Transaction will be added to Block '+ str(transaction_result)}
-                return JsonResponse(context, status=201)
-        else:
-            return render(request, template, {'form' : form})
-    return render(request, template, {'form' : AcceptTransactionForm()})
-
 def block_detail(request, index):
-    """Get list of transactions in a block"""
-    template = 'chain/get_transactions.html'
+    """View transactions in a block"""
+    template = 'chain/block_detail.html'
     context = {}
-    block = BLOCKCHAIN.chain[index]
-    context['block'] = block
-    return render(request, template, context)
-    # return JsonResponse(context, status=200)
-
-def chain(request):
-    template = 'chain/chain.html'
-    chain = BLOCKCHAIN.chain
-    context = {}
-    context['chain'] = chain
-    context['chain_length'] = len(chain)
+    block_number = int(index)-1
+    context['block_number'] = block_number
+    context['block'] = BLOCKCHAIN.chain[block_number]
     return render(request, template, context)
 
 def mine(request):
-    template = 'chain/mine.html'
-    context = {}
     # get next proof from POW algorithm
-    last_block = BLOCKCHAIN.chain[-1]
+    last_block = BLOCKCHAIN.last_block()
     nonce = BLOCKCHAIN.proof_of_work()
 
     # reward for finding proof
-    BLOCKCHAIN.add_transaction_to_current_array(MINING_SENDER, BLOCKCHAIN.node_id, MINING_REWARD, signature="")
+    BLOCKCHAIN.reward_miner(BLOCKCHAIN.node_id)
 
     # forge new block and add to chain
     previous_hash = BLOCKCHAIN.hash(last_block)
-    block = BLOCKCHAIN.create_block_and_add_to_chain(nonce, previous_hash)
-
-    context['message'] = "New block forged and added to chain"
-    context['block_number'] = block['block_number']
-    context['transactions'] = block['transactions']
-    context['nonce'] = block['nonce']
-    context['previous_hash'] = block['previous_hash']
-
-    return render(request, template, context)
+    BLOCKCHAIN.forge_block_and_add_to_chain(nonce, previous_hash)
+    messages.success(request, "Block mined successfully")
+    return redirect('blockchain:index')
 
 def register_nodes(request):
     """Register new nodes"""

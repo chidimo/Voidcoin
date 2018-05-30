@@ -1,10 +1,48 @@
 {% extends "voidcoin_base.html" %}
-{% block title %}Block{% endblock title %}
+{% block title %}Block number {{ block_number }}{% endblock title %}
 {% block introduction %}{% endblock introduction %}
 {% load static %}
 
 {% block content_content %}
 
-{{ block }}
+
+<div class='container siteuser-index-heading'>
+    <div class='row'>
+        <h3 class='float-left'>Block number {{ block_number }}</h3>
+    </div>
+</div>
+
+{% for key, value in block.items %}
+    {% if key == 'transactions' %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark">
+                    <caption>Transactions in block number {{ block_number }}</caption>
+                    <tr>
+                        <th>S/No.</th>
+                        <th>Amount</th>
+                        <th>Sender</th>
+                        <th>Recipient</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {% for transaction in value %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.sender_address }}</td>
+                        <td>{{ transaction.recipient_address }}</td>
+                    </tr>
+                {% empty %}
+                    <p>No transaction in block</p>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <h5>{{ key }}: {{ value }}</h5>
+    {% endif %}
+{% endfor %}
 
 {% endblock content_content %}

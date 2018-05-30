@@ -53,7 +53,7 @@ class Blockchain:
         # Random number to use as node id
         self.node_id = str(uuid4()).replace('-', '')
         # Genesis block
-        self.create_block_and_add_to_chain(0, '00')
+        self.forge_block_and_add_to_chain(0, '00')
 
     def register_node(self, node_url):
         """
@@ -79,7 +79,7 @@ class Blockchain:
 
         Parameters
         -----------
-        transaction : 
+        transaction : Transaction
 
         Returns
         ---------
@@ -91,6 +91,25 @@ class Blockchain:
         h = SHA.new(str(transaction).encode('utf-8'))
         return verifier.verify(h, binascii.unhexlify(signature))
 
+    def reward_miner(self, miner_address):
+        """Reward a miner
+
+        Parameters
+        -----------
+        miner_address : str
+            Address of miner
+
+        Returns
+        --------
+        int :
+            Current length of chain
+        """
+        transaction = OrderedDict({'sender_address': MINING_SENDER,
+                                    'recipient_address': miner_address,
+                                    'amount': MINING_REWARD})
+        self.transactions.append(transaction)
+        return len(self.chain) + 1
+
     def add_transaction_to_current_array(self, sender_address, recipient_address, amount, signature):
         """
         Add transaction to the transaction array if it can be verified
@@ -98,29 +117,23 @@ class Blockchain:
         transaction = OrderedDict({'sender_address': sender_address,
                                     'recipient_address': recipient_address,
                                     'amount': amount})
-        # Reward miner
-        if sender_address == MINING_SENDER:
+        verify = self.verify_transaction_signature(sender_address, signature, transaction)
+        if verify:
             self.transactions.append(transaction)
             return len(self.chain) + 1
-
-        # Manages transactions from one wallet to another
         else:
-            verify = self.verify_transaction_signature(sender_address, signature, transaction)
-            if verify:
-                self.transactions.append(transaction)
-                return len(self.chain) + 1
-            else:
-                return False
+            return False
 
-    def create_block_and_add_to_chain(self, nonce, previous_hash):
+    def forge_block_and_add_to_chain(self, nonce, previous_hash):
         """
         Add a block of transactions to the chain
         """
-        block = {'block_number': len(self.chain) + 1,
-                'timestamp': time(),
-                'transactions': self.transactions,
-                'nonce': nonce,
-                'previous_hash': previous_hash}
+        block = OrderedDict()
+        block['block_number'] = len(self.chain) + 1
+        block['nonce'] = nonce
+        block['previous_hash'] = previous_hash
+        block['timestamp'] = time()
+        block['transactions'] = self.transactions
 
         # Reset the current list of transactions
         self.transactions = []
@@ -133,14 +146,16 @@ class Blockchain:
         """
         Create SHA-256 hash of a block
         """
-        block_string = json.dumps(block, sort_keys=True).encode()
+
+        # convert block from OrderedDict to regular dictionary
+        block_string = json.dumps(block).encode()
         return hashlib.sha256(block_string).hexdigest()
 
     def proof_of_work(self):
         """
         Proof of work algorithm
         """
-        last_hash = self.hash(self.last_block)
+        last_hash = self.hash(self.last_block())
         nonce = 0
         while self.valid_proof(self.transactions, last_hash, nonce) is False:
             nonce += 1

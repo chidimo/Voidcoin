@@ -92,6 +92,8 @@
 						<li class="nav-item dropdown">
 						    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></a>
 						    <div class="dropdown-menu">
+						        <a class="dropdown-item" href="{% url 'blockchain:mine' %}">Mine</a>
+						        <div class="dropdown-divider"></div>
 						        <a class="dropdown-item" href="{% url 'siteuser:account_management' %}">My Account</a>
 						        <div class="dropdown-divider"></div>
 						        <a class="dropdown-item" href="{% url 'siteuser:edit_profile' %}">Edit Profile</a>

@@ -4,7 +4,7 @@ from siteuser.models import SiteUser
 from .utils import TimeStampedModel
 
 class BlockAccount(TimeStampedModel):
-    alias = models.CharField(max_length=12)
+    alias = models.CharField(max_length=30)
     owner = models.ForeignKey(SiteUser, null=True, blank=True, on_delete=models.CASCADE)
     private_key = models.TextField()
     public_key = models.TextField()
