@@ -8,11 +8,12 @@ class InitiateTransactionForm(forms.Form):
     recipient_address = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Recipient address'}))
     amount_to_send = forms.FloatField(widget=forms.NumberInput(attrs={'class' : 'form-control', 'step': 0.25, 'placeholder' : 'Amount to send: steps of 0.25'}))
 
-class InitiateTransactionChoiceFieldForm(forms.Form):
+class InitiateTransactionAuthUserForm(forms.Form):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
-        super(InitiateTransactionChoiceFieldForm, self).__init__(*args, **kwargs)
+        super(InitiateTransactionAuthUserForm, self).__init__(*args, **kwargs)
         self.fields['sender'].queryset = BlockAccount.objects.filter(owner__user=user)
+        self.fields['recipient'].queryset = BlockAccount.objects.exclude(owner__user=user)
 
     sender = forms.ModelChoiceField(
         queryset=BlockAccount.objects.all(),

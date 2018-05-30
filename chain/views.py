@@ -13,7 +13,7 @@ import Crypto.Random
 from Crypto.PublicKey import RSA
 
 from .blockchain_client import Transaction, Blockchain, MINING_SENDER, MINING_REWARD, COINBASE
-from .forms import InitiateTransactionForm, InitiateTransactionChoiceFieldForm, AcceptTransactionForm, NodeRegistrationForm, EditAliasForm
+from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, AcceptTransactionForm, NodeRegistrationForm, EditAliasForm
 
 from .models import BlockAccount
 
@@ -80,7 +80,7 @@ def transaction_auth_user(request):
     template = 'chain/initiate_transaction.html'
 
     if request.method == 'POST':
-        form = InitiateTransactionChoiceFieldForm(request.POST, user=user)
+        form = InitiateTransactionAuthUserForm(request.POST, user=user)
         if form.is_valid():
             data = form.cleaned_data
             sender = data['sender']
@@ -103,7 +103,7 @@ def transaction_auth_user(request):
             return redirect('siteuser:account_management')
         else:
             return render(request, template, {'form' : form})
-    return render(request, template, {'form' : InitiateTransactionChoiceFieldForm(user=user)})
+    return render(request, template, {'form' : InitiateTransactionAuthUserForm(user=user)})
 
 def transaction_anon(request):
     """
