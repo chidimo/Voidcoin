@@ -79,6 +79,7 @@ class Blockchain:
 
         Parameters
         -----------
+        transaction : 
 
         Returns
         ---------
@@ -87,7 +88,7 @@ class Blockchain:
         """
         public_key = RSA.importKey(binascii.unhexlify(sender_address))
         verifier = PKCS1_v1_5.new(public_key)
-        h = SHA.new(str(transaction)).encode('utf-8')
+        h = SHA.new(str(transaction).encode('utf-8'))
         return verifier.verify(h, binascii.unhexlify(signature))
 
     def add_transaction_to_current_array(self, sender_address, recipient_address, amount, signature):
@@ -102,7 +103,7 @@ class Blockchain:
             self.transactions.append(transaction)
             return len(self.chain) + 1
 
-        # Manages transactions from wallet to another wallet
+        # Manages transactions from one wallet to another
         else:
             verify = self.verify_transaction_signature(sender_address, signature, transaction)
             if verify:
