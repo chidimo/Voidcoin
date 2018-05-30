@@ -33,16 +33,16 @@ class AcceptTransactionForm(forms.Form):
 class NodeRegistrationForm(forms.Form):
     node_urls = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Comma-separated list e.g http://127.0.0.1:5000'}))
 
-class EditIdentifyForm(forms.ModelForm):
+class EditAliasForm(forms.ModelForm):
     class Meta:
         model = BlockAccount
-        fields = ('identify', )
+        fields = ('alias', )
 
-        widgets = {'identify' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Account identifier'})}
+        widgets = {'alias' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Account identifier'})}
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
-        super(EditIdentifyForm, self).__init__(*args, **kwargs)
+        super(EditAliasForm, self).__init__(*args, **kwargs)
         self.fields['account'].queryset = BlockAccount.objects.filter(owner__user=user)
 
     account = forms.ModelChoiceField(

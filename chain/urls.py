@@ -18,6 +18,6 @@ urlpatterns = [
     path('nodes/index/', views.node_index, name="node_index"),
     path('nodes/register/', views.register_nodes, name="register_nodes"),
     path('nodes/resolve/', views.consensus, name="consensus"),
-    path('edit-identify/', views.edit_identify, name="edit_identify"),
+    path('edit-alias/', views.edit_alias, name="edit_alias"),
 ]
 

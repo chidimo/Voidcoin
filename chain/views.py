@@ -13,7 +13,7 @@ import Crypto.Random
 from Crypto.PublicKey import RSA
 
 from .blockchain_client import Transaction, Blockchain, MINING_SENDER, MINING_REWARD, COINBASE
-from .forms import InitiateTransactionForm, InitiateTransactionChoiceFieldForm, AcceptTransactionForm, NodeRegistrationForm, EditIdentifyForm
+from .forms import InitiateTransactionForm, InitiateTransactionChoiceFieldForm, AcceptTransactionForm, NodeRegistrationForm, EditAliasForm
 
 from .models import BlockAccount
 
@@ -244,22 +244,22 @@ def consensus(request):
     # return redirect('blockchain:node_index')
     return render(request, template, context)
 
-def edit_identify(request):
+def edit_alias(request):
     user = request.user
-    template = 'chain/edit_identify.html'
+    template = 'chain/edit_alias.html'
 
     if request.method == 'POST':
-        form = EditIdentifyForm(request.POST, user=user)
+        form = EditAliasForm(request.POST, user=user)
         if form.is_valid():
             data = form.cleaned_data
-            identify = data['identify']
+            alias = data['alias']
             account = data['account']
 
-            account.identify = identify
-            account.save(update_fields=['identify'])
+            account.alias = alias
+            account.save(update_fields=['alias'])
             messages.success(request, "Key identifier updated successfully")
             return redirect('siteuser:account_management')
         else:
             return render(request, template, {'form' : form})
-    return render(request, template, {'form' : EditIdentifyForm(user=user)})
+    return render(request, template, {'form' : EditAliasForm(user=user)})
 
