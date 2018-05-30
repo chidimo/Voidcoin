@@ -3,7 +3,6 @@ import hashlib
 
 from uuid import uuid4
 from time import time
-from decimal import Decimal
 from collections import OrderedDict
 from urllib.parse import urlparse
 
@@ -18,8 +17,8 @@ from Crypto.Signature import PKCS1_v1_5
 
 MINING_DIFFICULTY = 2
 MINING_SENDER = 'VOIDCOIN'
-MINING_REWARD = Decimal('0.25')
-COINBASE = Decimal('1000.00')
+MINING_REWARD = 0.25
+COINBASE = 1000.00
 
 class Transaction:
     def __init__(self, sender_address, sender_private_key, recipient_address, amount):
@@ -91,13 +90,13 @@ class Blockchain:
         h = SHA.new(str(transaction)).encode('utf-8')
         return verifier.verify(h, binascii.unhexlify(signature))
 
-    def add_transaction_to_current_array(self, sender_address, recipient_address, value, signature):
+    def add_transaction_to_current_array(self, sender_address, recipient_address, amount, signature):
         """
         Add transaction to the transaction array if it can be verified
         """
         transaction = OrderedDict({'sender_address': sender_address,
                                     'recipient_address': recipient_address,
-                                    'value': value})
+                                    'amount': amount})
         # Reward miner
         if sender_address == MINING_SENDER:
             self.transactions.append(transaction)
@@ -136,7 +135,6 @@ class Blockchain:
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
-    @staticmethod
     def proof_of_work(self):
         """
         Proof of work algorithm

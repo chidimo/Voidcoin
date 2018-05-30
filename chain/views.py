@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.http import  JsonResponse, HttpResponseBadRequest#, HttpResponse
@@ -46,11 +44,11 @@ def generate_wallet(request):
 
     # If no instance has been created, the balance is None
     if sum_coins == None:
-        sum_coins = Decimal('0.00')
+        sum_coins = 0.00
     if sum_coins < COINBASE:
-        balance = Decimal('10.00')
+        balance = 10.00
     else:
-        balance = Decimal('0.00')
+        balance = 0.00
 
     # save credentials to database
     BlockAccount.objects.create(
@@ -185,7 +183,7 @@ def mine(request):
     nonce = BLOCKCHAIN.proof_of_work()
 
     # reward for finding proof
-    BLOCKCHAIN.add_transaction_to_current_array(sender_address=MINING_SENDER, recipient_address=BLOCKCHAIN.node_id, amount=MINING_REWARD, signature="")
+    BLOCKCHAIN.add_transaction_to_current_array(MINING_SENDER, BLOCKCHAIN.node_id, MINING_REWARD, signature="")
 
     # forge new block and add to chain
     previous_hash = BLOCKCHAIN.hash(last_block)
