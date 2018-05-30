@@ -1,12 +1,15 @@
 import json
 from decimal import Decimal
 
+from django.views import generic
 from django.db.models import Sum
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
-from django.views.decorators.http import require_POST
+# from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 import binascii
 import Crypto.Random
@@ -14,7 +17,7 @@ from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
 from .blockchain_client import Transaction, Blockchain
-from .forms import InitiateTransactionForm, AcceptTransactionForm, NodeRegistrationForm
+from .forms import InitiateTransactionForm, InitiateTransactionChoiceFieldForm, AcceptTransactionForm, NodeRegistrationForm, EditIdentifyForm
 
 from .models import BlockAccount
 
@@ -40,7 +43,6 @@ def generate_wallet(request):
     public_key = binascii.hexlify(pub_key.exportKey(format='DER')).decode('ascii')
 
     context = {'private_key' : private_key,'public_key' : public_key}
-
     messages.success(request, "New wallet generated successfully")
     messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
 
@@ -60,7 +62,6 @@ def generate_wallet(request):
         owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
 
     return redirect('siteuser:account_management')
-    # return JsonResponse(context, status=201)
 
 def transactions_index(request):
     """View all transactions on the blockchain"""
@@ -77,27 +78,29 @@ def transactions_destined_for_next_block(request):
     context['transactions'] = BLOCKCHAIN.transactions
     return render(request, template, context)
 
-def initiate_and_verify_transaction(request):
+@login_required
+def transaction_auth_user(request):
     """
     Initiate a transaction and send it to a blockchain node
     """
+    user = request.user
     template = 'chain/initiate_transaction.html'
 
     if request.method == 'POST':
-        form = InitiateTransactionForm(request.POST)
+        form = InitiateTransactionChoiceFieldForm(request.POST, user=user)
         if form.is_valid():
             data = form.cleaned_data
-            sender_address = data['sender_address']
-            sender_private_key = data['sender_private_key']
-            recipient_address = data['recipient_address']
+            sender = data['sender']
+            recipient = data['recipient']
             amount_to_send = data['amount_to_send']
 
-            # make transaction, sign it, and send it to blockchain node
+            sender_address = sender.public_key
+            sender_private_key = sender.private_key
+            recipient_address = recipient.public_key
+
             transaction_object = Transaction(sender_address, sender_private_key, recipient_address, amount_to_send)
             transaction = transaction_object.to_dict()
             signature = transaction_object.sign_transaction()
-
-            # Verify transaction and add it to transactions list if valid
             verify = BLOCKCHAIN.verify_transaction_signature(sender_address, signature, transaction)
             if verify:
                 BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_send, signature)
@@ -107,13 +110,12 @@ def initiate_and_verify_transaction(request):
             return redirect('siteuser:account_management')
         else:
             return render(request, template, {'form' : form})
-    return render(request, template, {'form' : InitiateTransactionForm()})
+    return render(request, template, {'form' : InitiateTransactionChoiceFieldForm(user=user)})
 
-def initiate_transaction(request):
+def transaction_anon(request):
     """
     Initiate a transaction and send it to a blockchain node
     """
-    # user = request.user
     template = 'chain/initiate_transaction.html'
     context = {}
 
@@ -127,60 +129,41 @@ def initiate_transaction(request):
             amount_to_send = data['amount_to_send']
 
             transaction_object = Transaction(sender_address, sender_private_key, recipient_address, amount_to_send)
-            transaction = transaction_object.to_dict()
-            signature = transaction_object.sign_transaction()
-            context['transaction'] = transaction
-            context['signature'] = signature
-            messages.success(request, "Transaction initiated successfully")
-            return redirect('siteuser:account_management') # send to verifier
+            context['transaction'] = transaction_object.to_dict()
+            context['signature'] = transaction_object.sign_transaction()
+            return JsonResponse(context, status=201)
         else:
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : InitiateTransactionForm()})
 
-def validate_transaction_and_add_it_to_block(request, sender_address, recipient_address, amount_to_receive, signature):
+def validate_and_block_transaction(request):
     """Check if transaction is valid, accept it and add it to the block"""
+    template = 'chain/validate_and_block_transaction.html'
 
-    required_values = [sender_address=='', recipient_address=='', amount_to_receive==None, signature=='']
-    if any(required_values):
-        return HttpResponseBadRequest("Missing values", status=400)
+    if request.method == 'POST':
+        form = AcceptTransactionForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            sender_address = data['sender_address']
+            recipient_address = data['recipient_address']
+            amount_to_receive = data['amount_to_receive']
+            signature = data['signature']
 
-    # add transaction to transaction list ready to be added to the next block
-    transaction_result = BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_receive, signature)
-    if transaction_result == False:
-        messages.error(request, "Invalid Transaction!")
-        return redirect('blockchain:transactions_destined_for_next_block')
-    else:
-        messages.success(request, 'Transaction will be added to Block {}'.format(str(transaction_result)))
-        return redirect('blockchain:transactions_destined_for_next_block')
+            required_values = [sender_address=='', recipient_address=='', amount_to_receive==None, signature=='']
+            if any(required_values):
+                return HttpResponseBadRequest("Missing values", status=400)
 
-# def validate_and_block_transaction(request):
-#     """Check if transaction is valid, accept it and add it to the block"""
-#     template = 'chain/validate_and_block_transaction.html'
-
-#     if request.method == 'POST':
-#         form = AcceptTransactionForm(request.POST)
-#         if form.is_valid():
-#             data = form.cleaned_data
-#             sender_address = data['sender_address']
-#             recipient_address = data['recipient_address']
-#             amount_to_receive = data['amount_to_receive']
-#             signature = data['signature']
-
-#             required_values = [sender_address=='', recipient_address=='', amount_to_receive==None, signature=='']
-#             if any(required_values):
-#                 return HttpResponseBadRequest("Missing values", status=400)
-
-#             # create new transaction
-#             transaction_result = BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_receive, signature)
-#             if transaction_result == False:
-#                 response = {'message': 'Invalid Transaction!'}
-#                 return JsonResponse(response, status=406)
-#             else:
-#                 response = {'message': 'Transaction will be added to Block '+ str(transaction_result)}
-#                 return JsonResponse(response, status=201)
-#         else:
-#             return render(request, template, {'form' : form})
-#     return render(request, template, {'form' : AcceptTransactionForm()})
+            # create new transaction
+            transaction_result = BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_receive, signature)
+            if transaction_result == False:
+                context = {'message': 'Invalid Transaction!'}
+                return JsonResponse(context, status=406)
+            else:
+                context = {'message': 'Transaction will be added to Block '+ str(transaction_result)}
+                return JsonResponse(context, status=201)
+        else:
+            return render(request, template, {'form' : form})
+    return render(request, template, {'form' : AcceptTransactionForm()})
 
 def block_detail(request, index):
     """Get list of transactions in a block"""
@@ -267,4 +250,23 @@ def consensus(request):
         messages.success(request, msg)
     # return redirect('blockchain:node_index')
     return render(request, template, context)
+
+def edit_identify(request):
+    user = request.user
+    template = 'chain/edit_identify.html'
+
+    if request.method == 'POST':
+        form = EditIdentifyForm(request.POST, user=user)
+        if form.is_valid():
+            data = form.cleaned_data
+            identify = data['identify']
+            account = data['account']
+
+            account.identify = identify
+            account.save(update_fields=['identify'])
+            messages.success(request, "Key identifier updated successfully")
+            return redirect('siteuser:account_management')
+        else:
+            return render(request, template, {'form' : form})
+    return render(request, template, {'form' : EditIdentifyForm(user=user)})
 

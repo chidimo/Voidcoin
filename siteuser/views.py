@@ -189,35 +189,7 @@ def account_management(request):
     context = {}
     user = request.user
     siteuser = user.siteuser
-
-    try:
-        facebook_login = user.social_auth.get(provider='facebook')
-    except UserSocialAuth.DoesNotExist:
-        facebook_login = None
-
-    try:
-        google_login = user.social_auth.get(provider='google-oauth2')
-    except UserSocialAuth.DoesNotExist:
-        google_login = None
-
-    try:
-        twitter_login = user.social_auth.get(provider='twitter')
-    except UserSocialAuth.DoesNotExist:
-        twitter_login = None
-
-    try:
-        yahoo_login = user.social_auth.get(provider='yahoo-oauth2')
-    except UserSocialAuth.DoesNotExist:
-        yahoo_login = None
-
-    can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
-
     context['siteuser'] = siteuser
-    context['facebook_login'] = facebook_login
-    context['google_login'] = google_login
-    context['twitter_login'] = twitter_login
-    context['yahoo_login'] = yahoo_login
-    context['can_disconnect'] = can_disconnect
     return render(request, template, context)
 
 @login_required

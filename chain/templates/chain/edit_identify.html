@@ -1,0 +1,16 @@
+{% extends "voidcoin_base.html" %}
+{% block title %}Edit account identifier{% endblock %}
+{% block introduction %}{% endblock introduction %}
+
+{% block content_content %}
+<div class="container upload-forms">
+    <h2>Edit account identifier</h2>
+    <hr>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-sm float-right" type="submit" value="Send">Send</button>
+    </form>
+</div>
+{% endblock content_content %}
