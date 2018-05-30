@@ -1,31 +1,26 @@
-import json
 from decimal import Decimal
 
-from django.views import generic
 from django.db.models import Sum
-from django.shortcuts import render, redirect, reverse
-from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.conf import settings
+from django.shortcuts import render, redirect
+from django.http import  JsonResponse, HttpResponseBadRequest#, HttpResponse
+# from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.conf import settings
 from django.contrib import messages
 # from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
 import binascii
 import Crypto.Random
-from Crypto.Hash import SHA
+# from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
-from .blockchain_client import Transaction, Blockchain
+from .blockchain_client import Transaction, Blockchain, MINING_SENDER, MINING_REWARD, COINBASE
 from .forms import InitiateTransactionForm, InitiateTransactionChoiceFieldForm, AcceptTransactionForm, NodeRegistrationForm, EditIdentifyForm
 
 from .models import BlockAccount
 
 # Instantiate a blockchain
 BLOCKCHAIN = Blockchain()
-MINING_SENDER = ''
-MINING_REWARD = Decimal('0.25')
-COINBASE = Decimal('1000.00')
 
 def index(request):
     template = 'chain/index.html'
@@ -103,7 +98,7 @@ def transaction_auth_user(request):
             signature = transaction_object.sign_transaction()
             verify = BLOCKCHAIN.verify_transaction_signature(sender_address, signature, transaction)
             if verify:
-                BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_send, signature)
+                BLOCKCHAIN.add_transaction_to_current_array(sender_address, recipient_address, amount_to_send, signature)
                 messages.success(request, "Transaction signature verified successfully")
             else:
                 messages.error(request, "Transaction rejected")
@@ -154,7 +149,7 @@ def validate_and_block_transaction(request):
                 return HttpResponseBadRequest("Missing values", status=400)
 
             # create new transaction
-            transaction_result = BLOCKCHAIN.submit_transaction(sender_address, recipient_address, amount_to_receive, signature)
+            transaction_result = BLOCKCHAIN.add_transaction_to_current_array(sender_address, recipient_address, amount_to_receive, signature)
             if transaction_result == False:
                 context = {'message': 'Invalid Transaction!'}
                 return JsonResponse(context, status=406)
@@ -190,7 +185,7 @@ def mine(request):
     nonce = BLOCKCHAIN.proof_of_work()
 
     # reward for finding proof
-    BLOCKCHAIN.submit_transaction(sender_address=MINING_SENDER, recipient_address=BLOCKCHAIN.node_id, amount=MINING_REWARD, signature="")
+    BLOCKCHAIN.add_transaction_to_current_array(sender_address=MINING_SENDER, recipient_address=BLOCKCHAIN.node_id, amount=MINING_REWARD, signature="")
 
     # forge new block and add to chain
     previous_hash = BLOCKCHAIN.hash(last_block)
