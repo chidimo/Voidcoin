@@ -29,8 +29,8 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td>{{ transaction.timestamp }}</td>
-                <td>{{ transaction.sender_address }}</td>
-                <td>{{ transaction.recipient_address }}</td>
+                <td title="{{ transaction.sender_address }}">{{ transaction.sender_address|truncatechars:10 }}</td>
+                <td title="{{ transaction.recipient_address }}">{{ transaction.recipient_address|truncatechars:10 }}</td>
             </tr>
         {% empty %}
             <p>No pending transactions</p>
