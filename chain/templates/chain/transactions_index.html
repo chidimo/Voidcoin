@@ -32,7 +32,7 @@
                 <td title="{{ transaction.recipient_address }}">{{ transaction.recipient_address|truncatechars:10 }}</td>
             </tr>
         {% empty %}
-            <p>No pending transaction</p>
+            <p>No transactions made yet</p>
         {% endfor %}
         <tr style="background:#a4a4ea">
             <td>Sum</td>

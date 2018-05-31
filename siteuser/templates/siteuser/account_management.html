@@ -10,11 +10,22 @@
     </div>
 </div>
 
-{% include 'siteuser/account_user_details.html' %}
+<div class="container song-about">
+    <div class="row">
+        <div class="col-sm-6">
+            <p class="text-secondary">Screen name: {{ siteuser.screen_name }}</p>
+            <p class="text-secondary">Email: <a href="mailto:{{ user.siteuser.user.email }}">{{ siteuser.user.email }}</a></p>
+            <p class="text-secondary">Member since: {{ siteuser.created }}</p>
+            <p class="text-secondary">Last seen: {{ siteuser.user.last_login }}</p>
+        </div>
+        <div class="col-sm-6">
+        </div>
+    </div>
+</div>
 
 <div class='container siteuser-index-heading'>
     <div class='row'>
-        <h5 class='float-left'>Accounts</h5>
+        <h5 class='float-left'>Wallets</h5>
     </div>
 </div>
 
@@ -22,8 +33,9 @@
     <div class="row text-center text-lg-left">
         {% for each in siteuser.wallet_set.all %}
             <a class="btn btn-sm btn-primary icon-buttons" href="" title="View keys" data-toggle="modal" data-target="#keyViewModal{{ each.pk }}">
-            {{ each.alias }}</a>
-            {% include 'siteuser/key_view_modal.html' %}
+                {{ each.alias }}
+            </a>
+            {% include 'siteuser/account_management_wallet_modal.html' %}
         {% endfor %}
     </div>
 </div>

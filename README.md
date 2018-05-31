@@ -1,10 +1,10 @@
 # VoidCoin
 
-See it in action [here](http://parousia.pythonanywhere.com/)
+A blockchain implementation in `python` and `django`. It builds largely on the
+[this](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
+and [this](http://adilmoujahid.com/posts/2018/03/intro-blockchain-bitcoin-python/) tutorials
 
-A blockchain implementation in `python` and `django`. It builds largely on
-[this]((https://hackernoon.com/learn-blockchains-by-building-one-117428612f46))
-and [this](http://adilmoujahid.com/posts/2018/03/intro-blockchain-bitcoin-python/).
+See it in action [here](http://parousia.pythonanywhere.com/)
 
 ## Features
 
@@ -24,11 +24,11 @@ This view shows a list of all blocks on the blockchain. A list of all signed and
 
 This shows a list of all wallets in the system. The wallets are stored in a django database with the following fields
 
-    `alias` This is an identifier to help a registered user different between their different wallets
-    `owner` This is the name of the registered user who creates the wallet
-    'public_key` The wallet address or public key
-    `private_key` The wallet private key. Only the user who owns this wallet can see this key, in their dashboard
-    `balance` The amount of coin balance in the wallet
+    **alias** This is an identifier to help a registered user different between their different wallets
+    **owner** The registered user who creates the wallet. Field is auto-filled for logged in user
+    **public_key** The wallet address or public key
+    **private_key** The wallet private key. Only the user who owns this wallet can see this key, in their dashboard
+    **balance** The amount of coin balance in the wallet
 
 ### Transactions Index
 
