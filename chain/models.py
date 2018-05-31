@@ -3,7 +3,7 @@ from django.db import models
 from siteuser.models import SiteUser
 from .utils import TimeStampedModel
 
-class BlockAccount(TimeStampedModel):
+class Wallet(TimeStampedModel):
     alias = models.CharField(max_length=30)
     owner = models.ForeignKey(SiteUser, null=True, blank=True, on_delete=models.CASCADE)
     private_key = models.TextField()
@@ -15,4 +15,4 @@ class BlockAccount(TimeStampedModel):
         return self.owner.__str__() + " - " + self.alias
 
     def save(self, *args, **kwargs):
-        return super(BlockAccount, self).save(*args, **kwargs)
+        return super(Wallet, self).save(*args, **kwargs)

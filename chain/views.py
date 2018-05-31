@@ -15,7 +15,7 @@ from Crypto.PublicKey import RSA
 from .blockchain_client import Transaction, COINBASE
 from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, NodeRegistrationForm, EditAliasForm
 
-from .models import BlockAccount
+from .models import Wallet
 
 # Instantiate a blockchain
 BLOCKCHAIN = settings.BLOCKCHAIN
@@ -41,7 +41,7 @@ def generate_wallet(request):
     messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
 
     # get balance of coins in the system
-    sum_coins = BlockAccount.objects.aggregate(total_balance=Sum('balance'))['total_balance']
+    sum_coins = Wallet.objects.aggregate(total_balance=Sum('balance'))['total_balance']
 
     # If no instance has been created, the balance is None
     if sum_coins == None:
@@ -52,7 +52,7 @@ def generate_wallet(request):
         balance = 0.00
 
     # save credentials to database
-    BlockAccount.objects.create(alias="Rename (30 characters)",
+    Wallet.objects.create(alias="Rename (30 characters)",
         owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
 
     return redirect('siteuser:account_management')
@@ -222,5 +222,5 @@ def edit_alias(request):
 def wallet_index(request):
     template = 'chain/wallet_index.html'
     context = {}
-    context['wallets'] = BlockAccount.objects.all()
+    context['wallets'] = Wallet.objects.all()
     return render(request, template, context)

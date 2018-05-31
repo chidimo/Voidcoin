@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import BlockAccount
+from .models import Wallet
 
 class InitiateTransactionForm(forms.Form):
     sender_address = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Sender address'}))
@@ -12,15 +12,15 @@ class InitiateTransactionAuthUserForm(forms.Form):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
         super(InitiateTransactionAuthUserForm, self).__init__(*args, **kwargs)
-        self.fields['sender'].queryset = BlockAccount.objects.filter(owner__user=user)
-        self.fields['recipient'].queryset = BlockAccount.objects.exclude(owner__user=user)
+        self.fields['sender'].queryset = Wallet.objects.filter(owner__user=user)
+        self.fields['recipient'].queryset = Wallet.objects.exclude(owner__user=user)
 
     sender = forms.ModelChoiceField(
-        queryset=BlockAccount.objects.all(),
+        queryset=Wallet.objects.all(),
         required=True,
         widget=forms.Select(attrs={'class' : 'form-control'}))
     recipient = forms.ModelChoiceField(
-        queryset=BlockAccount.objects.all(),
+        queryset=Wallet.objects.all(),
         required=True,
         widget=forms.Select(attrs={'class' : 'form-control'}))
     amount_to_send = forms.FloatField(widget=forms.NumberInput(attrs={'class' : 'form-control', 'step': 0.25}))
@@ -36,7 +36,7 @@ class NodeRegistrationForm(forms.Form):
 
 class EditAliasForm(forms.ModelForm):
     class Meta:
-        model = BlockAccount
+        model = Wallet
         fields = ('alias', )
 
         widgets = {'alias' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Account identifier'})}
@@ -44,9 +44,9 @@ class EditAliasForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
         super(EditAliasForm, self).__init__(*args, **kwargs)
-        self.fields['account'].queryset = BlockAccount.objects.filter(owner__user=user)
+        self.fields['account'].queryset = Wallet.objects.filter(owner__user=user)
 
     account = forms.ModelChoiceField(
-        queryset=BlockAccount.objects.all(),
+        queryset=Wallet.objects.all(),
         required=True,
         widget=forms.Select(attrs={'class' : 'form-control'}))
