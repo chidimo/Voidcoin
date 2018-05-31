@@ -8,19 +8,10 @@ from . import views
 app_name = "siteuser"
 
 urlpatterns = [
-    path('', views.SiteUserIndex.as_view(), name="index"),
     path("new/", views.new_siteuser, name="new"),
     path("delete-account/", views.delete_account, name="delete_account"),
-    path("deactivate-account/", views.deactivate_account, name="deactivate_account"),
-    path("activate-account/", views.activate_account, name="activate_account"),
     path("edit-profile/", views.SiteUserEdit.as_view(), name="edit_profile"),
-    path("welcome/<str:screen_name>/", views.welcome_siteuser, name="new_success"),
-    path("activate/<int:pk>/<str:screen_name>/", views.activate_siteuser, name="new_activation"),
-]
-
-urlpatterns += [
     path('manage-account/', views.account_management, name='account_management'),
-    path('set-social-password/', views.social_password, name='social_password'),
 ]
 
 urlpatterns += [

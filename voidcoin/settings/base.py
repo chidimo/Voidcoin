@@ -77,7 +77,6 @@ PROJECT_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
-    'social_django',
 ]
 
 INSTALLED_APPS = PREREQ_APPS +  PROJECT_APPS + THIRD_PARTY_APPS

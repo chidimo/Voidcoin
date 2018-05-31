@@ -55,10 +55,6 @@ class SiteUserMixin(forms.ModelForm):
         }
 
 class SiteUserRegistrationForm(forms.Form):
-    agreement = forms.BooleanField(
-        required=True,
-        widget=forms.CheckboxInput())
-
     screen_name = forms.CharField(
         required=True,
         widget=forms.TextInput(attrs={'class':'form-control', "placeholder" : "Screen name"}))
@@ -114,10 +110,3 @@ class PassWordGetterForm(forms.Form):
         if check_password(password, self.user.password) is False:
             self.add_error('password', 'You entered a wrong password')
 
-class EmailAndPassWordGetterForm(forms.Form):
-    password = forms.CharField(
-        required=True,
-        widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', "placeholder" : "Enter password"}))
-    email = forms.CharField(
-        required=True,
-        widget=forms.TextInput(attrs={'class':'form-control', 'type':'password', "placeholder" : "Enter password"}))
