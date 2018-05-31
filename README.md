@@ -24,11 +24,11 @@ This view shows a list of all blocks on the blockchain. A list of all signed and
 
 This shows a list of all wallets in the system. The wallets are stored in a django database with the following fields
 
-    **alias** This is an identifier to help a registered user different between their different wallets
-    **owner** The registered user who creates the wallet. Field is auto-filled for logged in user
-    **public_key** The wallet address or public key
-    **private_key** The wallet private key. Only the user who owns this wallet can see this key, in their dashboard
-    **balance** The amount of coin balance in the wallet
+**alias:** Identifier to help a registered user differentiate between their various wallets. Must be unique for user
+**owner:** The registered user who creates the wallet. Field is auto-filled for logged in user
+**public_key:** The wallet address or public key
+**private_key:** The wallet private key. Only the user who owns this wallet can see this key, in their dashboard
+**balance:** The amount of coin balance in the wallet
 
 ### Transactions Index
 

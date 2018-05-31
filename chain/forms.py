@@ -12,16 +12,20 @@ class InitiateTransactionAuthUserForm(forms.Form):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
         super(InitiateTransactionAuthUserForm, self).__init__(*args, **kwargs)
-        self.fields['sender'].queryset = Wallet.objects.filter(owner__user=user)
+        self.fields['wallet'].queryset = Wallet.objects.filter(owner__user=user)
 
     def clean(self):
         data = self.cleaned_data
-        sender = data['sender']
+        wallet = data['wallet']
         recipient = data['recipient']
-        if sender == recipient:
-            self.add_error('recipient', 'Sender cannot be recipient')
+        amount_to_send = data['amount_to_send']
+        if wallet == recipient:
+            self.add_error('recipient', 'Wallet cannot transfer to itself')
+        if wallet.balance < amount_to_send:
+            self.add_error('wallet', 'Low wallet balance: {}'.format(wallet.balance))
 
-    sender = forms.ModelChoiceField(
+
+    wallet = forms.ModelChoiceField(
         queryset=Wallet.objects.all(),
         required=True,
         widget=forms.Select(attrs={'class' : 'form-control'}))
@@ -48,11 +52,17 @@ class EditAliasForm(forms.ModelForm):
         widgets = {'alias' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Account identifier'})}
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", None)
+        self.user = kwargs.pop("user", None)
         super(EditAliasForm, self).__init__(*args, **kwargs)
-        self.fields['account'].queryset = Wallet.objects.filter(owner__user=user)
+        self.fields['account'].queryset = Wallet.objects.filter(owner__user=self.user)
 
     account = forms.ModelChoiceField(
         queryset=Wallet.objects.all(),
         required=True,
         widget=forms.Select(attrs={'class' : 'form-control'}))
+
+    def clean(self):
+        alias = self.cleaned_data['alias']
+        aliases = Wallet.objects.filter(owner__user=self.user).values_list('alias', flat=True)
+        if alias in aliases:
+            self.add_error('alias', "You already have a wallet name {}".format(alias))

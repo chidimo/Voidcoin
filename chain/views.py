@@ -98,12 +98,12 @@ def transaction_auth_user(request):
         form = InitiateTransactionAuthUserForm(request.POST, user=user)
         if form.is_valid():
             data = form.cleaned_data
-            sender = data['sender']
+            wallet = data['wallet']
             recipient = data['recipient']
             amount_to_send = data['amount_to_send']
 
-            sender_address = sender.public_key
-            sender_private_key = sender.private_key
+            sender_address = wallet.public_key
+            sender_private_key = wallet.private_key
             recipient_address = recipient.public_key
 
             transaction_object = Transaction(sender_address, sender_private_key, recipient_address, amount_to_send)
