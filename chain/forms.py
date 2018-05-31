@@ -24,7 +24,6 @@ class InitiateTransactionAuthUserForm(forms.Form):
         if wallet.balance < amount_to_send:
             self.add_error('wallet', 'Low wallet balance: {}'.format(wallet.balance))
 
-
     wallet = forms.ModelChoiceField(
         queryset=Wallet.objects.all(),
         required=True,

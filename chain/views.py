@@ -1,4 +1,3 @@
-import json
 
 from django.db.models import Sum
 from django.shortcuts import render, redirect
@@ -115,6 +114,13 @@ def transaction_auth_user(request):
                 messages.success(request, "Transaction signature verified successfully and stacked to be mined.")
             else:
                 messages.error(request, "Transaction rejected")
+
+            # update wallet balances
+            wallet.balance -= amount_to_send
+            wallet.save()
+            recipient.balance += amount_to_send
+            recipient.save()
+
             return redirect('blockchain:transactions_destined_for_next_block')
         else:
             return render(request, template, {'form' : form})

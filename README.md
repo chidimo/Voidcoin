@@ -13,6 +13,7 @@ See it in action [here](http://parousia.pythonanywhere.com/)
 1. Node registration
 1. User registration (optional). To keep things simple, registration only requires a user to provide an email
 (not necessarily valid, but format is important) and a unique screen name (for identification)
+1. Cannot transfer more coin than you have in your wallet
 
 ## Views
 
