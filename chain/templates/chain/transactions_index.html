@@ -2,6 +2,7 @@
 {% block title %}Transactions{% endblock title %}
 {% block introduction %}{% endblock introduction %}
 {% load static %}
+{% load chain_templatetags %}
 
 {% block content_content %}
 
@@ -34,6 +35,12 @@
         {% empty %}
             <p>No pending transaction</p>
         {% endfor %}
+        <tr style="background:#a4a4ea">
+            <td></td>
+            <td>{{ transactions|sum_amounts }}</td>
+            <td></td>
+            <td></td>
+        </tr>
         </tbody>
     </table>
 </div>
