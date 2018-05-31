@@ -1,16 +1,16 @@
 import json
+import time
 import hashlib
 
 from uuid import uuid4
-from time import time
 from collections import OrderedDict
 from urllib.parse import urlparse
 
 import requests
 
 import binascii
-import Crypto
-import Crypto.Random
+# import Crypto
+# import Crypto.Random
 from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
@@ -26,7 +26,7 @@ class Transaction:
         self.sender_address = sender_address
         self.sender_private_key = sender_private_key
         self.recipient_address = recipient_address
-        self.timestamp = time()
+        self.timestamp = time.strftime('%d/%m/%Y-%H:%M:%S')
         self.amount = amount
 
     def __getattr__(self, attr):
@@ -36,7 +36,9 @@ class Transaction:
         return OrderedDict(
             {'sender_address': self.sender_address,
             'recipient_address': self.recipient_address,
-            'amount' : self.amount})
+            'amount' : self.amount,
+            # 'timestamp' : self.timestamp
+            })
 
     def sign_transaction(self):
         """Sign the transaction with sender's private key"""
@@ -68,9 +70,9 @@ class Blockchain:
 
         parsed_url = urlparse(node_url)
         if parsed_url.netloc:
-            self.nodes[parsed_url.netloc] = time()
+            self.nodes[parsed_url.netloc] = time.strftime('%d/%m/%Y-%H:%M:%S')
         elif parsed_url.path:
-            self.nodes[parsed_url.path] = time()
+            self.nodes[parsed_url.path] = time.strftime('%d/%m/%Y-%H:%M:%S')
         else:
             raise ValueError("Invalid url")
 
@@ -130,10 +132,10 @@ class Blockchain:
         Add a block of transactions to the chain
         """
         block = OrderedDict()
-        block['block_number'] = len(self.chain) + 1
+        block['number'] = len(self.chain) + 1
         block['nonce'] = nonce
         block['previous_hash'] = previous_hash
-        block['timestamp'] = time()
+        block['timestamp'] = time.strftime('%d/%m/%Y-%H:%M:%S')
         block['transactions'] = self.transactions
 
         # Reset the current list of transactions

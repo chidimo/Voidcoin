@@ -1,11 +1,8 @@
-
 from django.db.models import Sum
 from django.shortcuts import render, redirect
-from django.http import  JsonResponse#, HttpResponseBadRequest, HttpResponse
-# from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import  JsonResponse
 from django.conf import settings
 from django.contrib import messages
-# from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
 import binascii
@@ -111,7 +108,7 @@ def transaction_auth_user(request):
             verify = BLOCKCHAIN.verify_transaction_signature(sender_address, signature, transaction)
             if verify:
                 BLOCKCHAIN.add_transaction_to_current_array(sender_address, recipient_address, amount_to_send, signature)
-                messages.success(request, "Transaction signature verified successfully and stacked to be mined.")
+                messages.success(request, "Transaction signature verified successfully and transaction stacked for 'blocking'.")
             else:
                 messages.error(request, "Transaction rejected")
 
@@ -154,14 +151,14 @@ def block_detail(request, index):
     """View transactions in a block"""
     template = 'chain/block_detail.html'
     context = {}
-    block_number = int(index)-1
-    context['block_number'] = block_number + 1
-    context['block_items'] = BLOCKCHAIN.chain[block_number]
+    number = int(index)-1
+    context['number'] = number + 1
+    context['block_items'] = BLOCKCHAIN.chain[number]
     return render(request, template, context)
 
 def mine(request):
     if BLOCKCHAIN.mineable() is False:
-        messages.error(request, "At least three (3) transactions are needed for mining.")
+        messages.error(request, "At least three (3) transactions are needed to forge a block.")
         return redirect('blockchain:index')
 
     # get next proof from POW algorithm

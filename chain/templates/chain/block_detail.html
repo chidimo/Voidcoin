@@ -1,5 +1,5 @@
 {% extends "voidcoin_base.html" %}
-{% block title %}Block number {{ block_number }}{% endblock title %}
+{% block title %}Block number {{ number }}{% endblock title %}
 {% block introduction %}{% endblock introduction %}
 {% load chain_templatetags %}
 
@@ -7,7 +7,7 @@
 
 <div class='container siteuser-index-heading'>
     <div class='row'>
-        <h3 class='float-left'>Block number {{ block_number }}</h3>
+        <h3 class='float-left'>Block number {{ number }}</h3>
     </div>
 </div>
 
@@ -18,7 +18,7 @@
         <div class="table-responsive">
             <table class="table">
                 <thead class="thead-dark">
-                    <caption>Transactions in block number {{ block_number }}</caption>
+                    <caption>Transactions in block number {{ number }}</caption>
                     <tr>
                         <th>S/No.</th>
                         <th>Amount</th>

@@ -9,11 +9,11 @@
     </div>
 </div>
 
-<p><span class="text-danger bold">Coin base:</span> {{ coin_base }}, <span class="text-danger bold">Remaining:</span> {{ unassigned }}</p>
+<p><strong class="text-danger bold">Coin base:</strong> {{ coin_base }}, <strong class="text-danger">Remaining:</strong> {{ unassigned }}</p>
 <p>
-    <span class="text-danger bold">Mining reward:</span> {{ mining_reward }},
-    <span class="text-danger bold">Mining difficulty:</span> {{ mining_difficulty }},
-    <span class="text-danger bold">Mineable transaction length:</span> {{ mineable }}
+    <strong class="text-danger bold">Mining reward:</strong> {{ mining_reward }},
+    <strong class="text-danger bold">Mining difficulty:</strong> {{ mining_difficulty }},
+    <strong class="text-danger bold">Mineable transaction length:</strong> {{ mineable }}
 </p>
 
 <h4>Transactions for next block</h4>
@@ -53,7 +53,7 @@
         <thead class="thead-dark">
             <caption>Blocks</caption>
             <tr>
-                <th>Block number</th>
+                <th>Number</th>
                 <th>nonce</th>
                 <th>Previous hash</th>
                 <th>Timestamp</th>
@@ -66,7 +66,7 @@
                 {% for key, value in block.items %}
                     {% if key == 'transactions' %}
                         <td title="{{ value }}">{{ value|truncatechars:10 }}</td>
-                    {% elif key == 'block_number' %}
+                    {% elif key == 'number' %}
                         <td><a href="{% url 'blockchain:block_detail' value %}">{{ value }}</a></td>
                     {% else %}
                         <td>{{ value }}</td>
