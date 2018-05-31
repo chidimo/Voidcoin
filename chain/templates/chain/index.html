@@ -9,8 +9,12 @@
     </div>
 </div>
 
-<p>Coin base: {{ coin_base }}, Remaining: {{ unassigned }}</p>
-<p>Mining reward: {{ mining_reward }}, Mining difficulty: {{ mining_difficulty }}</p>
+<p><span class="text-danger bold">Coin base:</span> {{ coin_base }}, <span class="text-danger bold">Remaining:</span> {{ unassigned }}</p>
+<p>
+    <span class="text-danger bold">Mining reward:</span> {{ mining_reward }},
+    <span class="text-danger bold">Mining difficulty:</span> {{ mining_difficulty }},
+    <span class="text-danger bold">Mineable transaction length:</span> {{ mineable }}
+</p>
 
 <h4>Transactions for next block</h4>
 

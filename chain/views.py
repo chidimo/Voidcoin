@@ -14,7 +14,7 @@ import Crypto.Random
 # from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
-from .blockchain_client import Transaction, COINBASE, MINING_DIFFICULTY, MINING_REWARD
+from .blockchain_client import Transaction, COINBASE, MINING_DIFFICULTY, MINING_REWARD, MINABLE_TRANSACTIONS
 from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, NodeRegistrationForm, EditAliasForm
 
 from .models import Wallet
@@ -36,6 +36,7 @@ def index(request):
     context['mining_reward'] = MINING_REWARD
     context['coin_base'] = COINBASE
     context['unassigned'] = COINBASE - SUM_COINS
+    context['mineable'] = MINABLE_TRANSACTIONS
     return render(request, template, context)
 
 def generate_wallet(request):
@@ -153,6 +154,10 @@ def block_detail(request, index):
     return render(request, template, context)
 
 def mine(request):
+    if BLOCKCHAIN.mineable() is False:
+        messages.error(request, "At least three (3) transactions are needed for mining.")
+        return redirect('blockchain:index')
+
     # get next proof from POW algorithm
     last_block = BLOCKCHAIN.last_block()
     nonce = BLOCKCHAIN.proof_of_work()

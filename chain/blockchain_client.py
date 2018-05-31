@@ -18,6 +18,7 @@ from Crypto.Signature import PKCS1_v1_5
 MINING_DIFFICULTY = 2
 MINING_SENDER = 'VOIDCOIN'
 MINING_REWARD = 0.25
+MINABLE_TRANSACTIONS = 3
 COINBASE = 1000.00
 
 class Transaction:
@@ -256,3 +257,8 @@ class Blockchain:
 
     def last_block(self):
         return self.chain[-1]
+
+    def mineable(self):
+        if len(self.transactions) >= MINABLE_TRANSACTIONS:
+            return True
+        return False
