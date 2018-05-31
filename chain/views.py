@@ -219,3 +219,8 @@ def edit_alias(request):
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : EditAliasForm(user=user)})
 
+def wallet_index(request):
+    template = 'chain/wallet_index.html'
+    context = {}
+    context['wallets'] = BlockAccount.objects.all()
+    return render(request, template, context)

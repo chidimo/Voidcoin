@@ -1,0 +1,39 @@
+{% extends "voidcoin_base.html" %}
+{% block title %}Wallets{% endblock title %}
+{% block introduction %}{% endblock introduction %}
+
+{% block content_content %}
+
+<div class='container siteuser-index-heading'>
+    <div class='row'>
+        <h3 class='float-left'>Wallets</h3>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <caption>Wallets</caption>
+            <tr>
+                <th>S/No.</th>
+                <th>Alias</th>
+                <th>Owner</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for wallet in wallets %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ wallet.alias }}</td>
+                <td>{{ wallet.owner }}</td>
+                <td>{{ wallet.public_key }}</td>
+            </tr>
+        {% empty %}
+            <p>No nodes</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content_content %}

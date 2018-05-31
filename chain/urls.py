@@ -8,6 +8,7 @@ app_name = "blockchain"
 urlpatterns = [
     path('', views.index, name="index"),
     path('wallet/new/', views.generate_wallet, name="generate_wallet"),
+    path('wallet/index/', views.wallet_index, name="wallet_index"),
     path('transactions/index/', views.transactions_index, name="transactions_index"),
     path('transactions/next-block/', views.transactions_destined_for_next_block, name="transactions_destined_for_next_block"),
     path('transactions/anon-user/', views.transaction_anon, name="transaction_anon"),
