@@ -45,10 +45,6 @@ def generate_wallet(request):
     private_key = binascii.hexlify(pr_key.exportKey(format='DER')).decode('ascii')
     public_key = binascii.hexlify(pub_key.exportKey(format='DER')).decode('ascii')
 
-    # context = {'private_key' : private_key,'public_key' : public_key}
-    messages.success(request, "New wallet generated successfully")
-    messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
-
     # get balance of coins in the system
     SUM_COINS = Wallet.objects.aggregate(total_balance=Sum('balance'))['total_balance']
     # If no wallet instance has been created, the balance returns None
@@ -59,11 +55,19 @@ def generate_wallet(request):
     else:
         balance = 0.00
 
-    # save credentials to database
-    Wallet.objects.create(alias="Rename (30 characters)",
-        owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
-
-    return redirect('siteuser:account_management')
+    messages.success(request, "New wallet generated successfully.")
+    messages.success(request, "You have been assigned an initial coin balance of {}".format(balance))
+    if request.user.is_authenticated is False:
+        messages.error(request, "Copy your public and private keys and save them in a safe place at once as they cannot be recovered if lost")
+        messages.success(request, "Public key: {}".format(public_key))
+        messages.success(request, "Private key: {}".format(private_key))
+        return redirect('blockchain:index')
+    else:
+        messages.success(request, "You can view your account keys from your dashboard")
+        # save credentials to database
+        Wallet.objects.create(alias="Rename (30 characters)",
+            owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
+        return redirect('siteuser:account_management')
 
 def transactions_index(request):
     """View all transactions on the blockchain"""
@@ -221,7 +225,7 @@ def edit_alias(request):
 
             account.alias = alias
             account.save(update_fields=['alias'])
-            messages.success(request, "Key identifier updated successfully")
+            messages.success(request, "Wallet alias updated successfully")
             return redirect('siteuser:account_management')
         else:
             return render(request, template, {'form' : form})

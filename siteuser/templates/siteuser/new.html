@@ -10,10 +10,6 @@
     <div class="container register-forms">
         <h2 class='text-center'>Sign Up</h2>
 
-        {% include "registration/social_logins.html" %}
-        <p>By registering via social account you consent with our <a href="/terms-of-use/" target="_blank">Terms of Use</a> and
-            <a href="/privacy-policy/" target="_blank">Privacy policy</a>.</p>
-
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
                 <p>{{ form.email }}</p>
@@ -24,7 +20,7 @@
                 <p>{{ form.password1.errors }}</p>
                 <p>{{ form.password2 }}</p>
                 <p>{{ form.password2.errors }}</p>
-                <p>{{ form.agreement }} I consent with Blockchain's
+                <p>{{ form.agreement }} I consent with VoidCoin's
                     <a href="/terms-of-use/" target="_blank">Terms of Use</a> and
                     <a href="/privacy-policy/" target="_blank">Privacy policy</a>.</p>
             <button class="btn btn-primary btn-sm register-btn" type="submit" value="Sign Up">Sign Up</button>

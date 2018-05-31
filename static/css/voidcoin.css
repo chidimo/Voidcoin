@@ -314,42 +314,10 @@ input#id_password {
   padding-right: 5px;
 }
 
-/*LOGIN PAGE*/
-
-.social-logins {
-    font-size: 22px;
-    border-radius: .15rem;
-    padding-top: .3rem;
-    padding-bottom: .3rem;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    margin-bottom: 1rem;
-}
-.social-logins > a {
+a.upload-button {
     color: white;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-    text-align: center;
-    width: 40px;
-    height: 40px;
-    padding: 3px;
-}
-
-.social-logins > a.google-login {
-    background: #dd4b39;
-}
-
-.social-logins > a.facebook-login {
-    background: #3b5998;
-}
-
-.social-logins > a.yahoo-login {
-    background: #7B0099;
-}
-
-.social-logins > a.twitter-login {
-    background: #00aced;
+    margin-right: .35rem;
+    margin-top: .3rem;
 }
 
 .login-form {

@@ -16,10 +16,6 @@
 
     <h2 class='text-center'>Log In</h2>
 
-    {% include "registration/social_logins.html" %}
-    <p>By registering via social account you consent with our <a href="/terms-of-use/" target="_blank">Terms of Use</a> and
-            <a href="/privacy-policy/" target="_blank">Privacy policy</a>.</p>
-
     <form method="post" action="{% url 'siteuser:login' %}">
         {% csrf_token %}
 
