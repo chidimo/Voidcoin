@@ -3,13 +3,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="keyViewModalLabel">Keys</h5>
+                <h5 class="modal-title" id="keyViewModalLabel"><span class="text-danger">{{ each.alias }}</span> wallet</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="key-display"><b>Balance:</b> {{ each.balance }}</p>
-                <p class="key-display"><b>Public key:</b> {{ each.public_key }}</p>
-                <p class="key-display"><b>Private key:</b> {{ each.private_key }}</p>
+                <p class="key-display"><b class="text-danger">Balance:</b> {{ each.balance }}</p>
+                <p class="key-display"><b class="text-danger">Public key:</b> {{ each.public_key }}</p>
+                <p class="key-display"><b class="text-danger">Private key:</b> {{ each.private_key }}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>

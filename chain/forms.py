@@ -13,7 +13,13 @@ class InitiateTransactionAuthUserForm(forms.Form):
         user = kwargs.pop("user", None)
         super(InitiateTransactionAuthUserForm, self).__init__(*args, **kwargs)
         self.fields['sender'].queryset = Wallet.objects.filter(owner__user=user)
-        self.fields['recipient'].queryset = Wallet.objects.exclude(owner__user=user)
+
+    def clean(self):
+        data = self.cleaned_data
+        sender = data['sender']
+        recipient = data['recipient']
+        if sender == recipient:
+            self.add_error('recipient', 'Sender cannot be recipient')
 
     sender = forms.ModelChoiceField(
         queryset=Wallet.objects.all(),

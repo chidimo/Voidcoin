@@ -20,7 +20,7 @@
 
 <div class="container">
     <div class="row text-center text-lg-left">
-        {% for each in siteuser.blockaccount_set.all %}
+        {% for each in siteuser.wallet_set.all %}
             <a class="btn btn-sm btn-primary icon-buttons" href="" title="View keys" data-toggle="modal" data-target="#keyViewModal{{ each.pk }}">
             {{ each.alias }} Balance {{ each.balance }}</a>
             {% include 'siteuser/key_view_modal.html' %}

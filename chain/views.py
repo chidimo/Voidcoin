@@ -97,11 +97,10 @@ def transaction_auth_user(request):
             verify = BLOCKCHAIN.verify_transaction_signature(sender_address, signature, transaction)
             if verify:
                 BLOCKCHAIN.add_transaction_to_current_array(sender_address, recipient_address, amount_to_send, signature)
-                messages.success(request, "Transaction signature verified successfully")
+                messages.success(request, "Transaction signature verified successfully and stacked to be mined.")
             else:
                 messages.error(request, "Transaction rejected")
-            return redirect('blockchain:transactions_destined_for_next_block') # change later
-            # return redirect('siteuser:account_management')
+            return redirect('blockchain:transactions_destined_for_next_block')
         else:
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : InitiateTransactionAuthUserForm(user=user)})
