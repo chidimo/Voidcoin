@@ -5,9 +5,12 @@
 {% block content_content %}
 <div class='container siteuser-index-heading'>
     <div class='row'>
-        <h3 class='float-left'>Home</h3>
+        <h3 class='float-left'>VoidCoin home</h3>
     </div>
 </div>
+
+<p>Coin base: {{ coin_base }}, Remaining: {{ unassigned }}</p>
+<p>Mining reward: {{ mining_reward }}, Mining difficulty: {{ mining_difficulty }}</p>
 
 <h4>Transactions for next block</h4>
 

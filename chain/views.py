@@ -12,7 +12,7 @@ import Crypto.Random
 # from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
-from .blockchain_client import Transaction, COINBASE
+from .blockchain_client import Transaction, COINBASE, MINING_DIFFICULTY, MINING_REWARD
 from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, NodeRegistrationForm, EditAliasForm
 
 from .models import Wallet
@@ -21,10 +21,19 @@ from .models import Wallet
 BLOCKCHAIN = settings.BLOCKCHAIN
 
 def index(request):
+    # get balance of coins in the system
+    SUM_COINS = Wallet.objects.aggregate(total_balance=Sum('balance'))['total_balance']
+    # If no wallet instance has been created, the balance returns None
+    if SUM_COINS == None:
+        SUM_COINS = 0.00
     template = 'chain/index.html'
     context = {}
     context['pending_transactions'] = BLOCKCHAIN.transactions
     context['chain'] = BLOCKCHAIN.chain
+    context['mining_difficulty'] = MINING_DIFFICULTY
+    context['mining_reward'] = MINING_REWARD
+    context['coin_base'] = COINBASE
+    context['unassigned'] = COINBASE - SUM_COINS
     return render(request, template, context)
 
 def generate_wallet(request):
@@ -41,12 +50,11 @@ def generate_wallet(request):
     messages.warning(request, "Save keys in a safe place at once as they cannot be recovered if lost")
 
     # get balance of coins in the system
-    sum_coins = Wallet.objects.aggregate(total_balance=Sum('balance'))['total_balance']
-
-    # If no instance has been created, the balance is None
-    if sum_coins == None:
-        sum_coins = 0.00
-    if sum_coins < COINBASE:
+    SUM_COINS = Wallet.objects.aggregate(total_balance=Sum('balance'))['total_balance']
+    # If no wallet instance has been created, the balance returns None
+    if SUM_COINS == None:
+        SUM_COINS = 0.00
+    if SUM_COINS < COINBASE:
         balance = 10.00
     else:
         balance = 0.00
@@ -150,6 +158,7 @@ def mine(request):
     previous_hash = BLOCKCHAIN.hash(last_block)
     BLOCKCHAIN.forge_block_and_add_to_chain(nonce, previous_hash)
     messages.success(request, "Block mined successfully")
+    messages.success(request, "You have been rewarded with 0.25 coins")
     return redirect('blockchain:index')
 
 def register_nodes(request):
