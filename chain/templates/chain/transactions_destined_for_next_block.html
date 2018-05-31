@@ -1,7 +1,6 @@
 {% extends "voidcoin_base.html" %}
 {% block title %}Transactions for next block{% endblock title %}
 {% block introduction %}{% endblock introduction %}
-{% load static %}
 {% load chain_templatetags %}
 
 {% block content_content %}
@@ -37,7 +36,7 @@
             <p>No pending transactions</p>
         {% endfor %}
         <tr style="background:#a4a4ea">
-            <td></td>
+            <td>Sum</td>
             <td>{{ transactions|sum_amounts }}</td>
             <td></td>
             <td></td>
