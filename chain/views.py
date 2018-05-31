@@ -1,3 +1,5 @@
+import json
+
 from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.http import  JsonResponse#, HttpResponseBadRequest, HttpResponse
@@ -51,7 +53,7 @@ def generate_wallet(request):
     if SUM_COINS == None:
         SUM_COINS = 0.00
     if SUM_COINS < COINBASE:
-        balance = 10.00
+        balance = 50.00
     else:
         balance = 0.00
 
@@ -146,8 +148,8 @@ def block_detail(request, index):
     template = 'chain/block_detail.html'
     context = {}
     block_number = int(index)-1
-    context['block_number'] = block_number
-    context['block'] = BLOCKCHAIN.chain[block_number]
+    context['block_number'] = block_number + 1
+    context['block_items'] = BLOCKCHAIN.chain[block_number]
     return render(request, template, context)
 
 def mine(request):

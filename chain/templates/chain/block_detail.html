@@ -5,14 +5,15 @@
 
 {% block content_content %}
 
-
 <div class='container siteuser-index-heading'>
     <div class='row'>
         <h3 class='float-left'>Block number {{ block_number }}</h3>
     </div>
 </div>
 
-{% for key, value in block.items %}
+
+{% for key, value in block_items.items %}
+
     {% if key == 'transactions' %}
         <div class="table-responsive">
             <table class="table">
@@ -31,8 +32,8 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ transaction.amount }}</td>
-                        <td>{{ transaction.sender_address }}</td>
-                        <td>{{ transaction.recipient_address }}</td>
+                        <td title="{{ transaction.sender_address }}">{{ transaction.sender_address|truncatechars:10 }}</td>
+                        <td title="{{ transaction.recipient_address }}">{{ transaction.recipient_address|truncatechars:10 }}</td>
                     </tr>
                 {% empty %}
                     <p>No transaction in block</p>
@@ -41,7 +42,7 @@
             </table>
         </div>
     {% else %}
-        <h5>{{ key }}: {{ value }}</h5>
+        <p>{{ key }}: {{ value }}</p>
     {% endif %}
 {% endfor %}
 
