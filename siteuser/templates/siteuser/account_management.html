@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-sm-6">
             <p class="text-secondary">Screen name: {{ siteuser.screen_name }}</p>
-            <p class="text-secondary">Email: <a href="mailto:{{ user.siteuser.user.email }}">{{ siteuser.user.email }}</a></p>
+            <p class="text-secondary">Email: <a href="mailto:{{ siteuser.user.email }}">{{ siteuser.user.email }}</a></p>
             <p class="text-secondary">Member since: {{ siteuser.created }}</p>
             <p class="text-secondary">Last seen: {{ siteuser.user.last_login }}</p>
         </div>

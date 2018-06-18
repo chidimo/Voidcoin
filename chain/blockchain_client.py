@@ -15,7 +15,7 @@ from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 
-MINING_DIFFICULTY = 2
+MINING_DIFFICULTY = 1
 MINING_SENDER = 'VOIDCOIN'
 MINING_REWARD = 0.25
 MINABLE_TRANSACTIONS = 3
@@ -111,6 +111,7 @@ class Blockchain:
                                     'recipient_address': miner_address,
                                     'amount': MINING_REWARD})
         self.transactions.append(transaction)
+
         return len(self.chain) + 1
 
     def add_transaction_to_current_array(self, sender_address, recipient_address, amount, signature):

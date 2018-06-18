@@ -64,8 +64,8 @@
 					<li class="nav-item dropdown">
 					    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Wallet</a>
 						<div class="dropdown-menu">
-						    <a class="dropdown-item" href="{% url 'blockchain:generate_wallet' %}">New</a>
-						    <a class="dropdown-item" href="{% url 'blockchain:wallet_index' %}">Index</a>
+						    <a class="dropdown-item" href="{% url 'siteuser:generate_wallet' %}">New</a>
+						    <a class="dropdown-item" href="{% url 'siteuser:wallet_index' %}">Index</a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -91,14 +91,14 @@
 				<ul class="navbar-nav ml-auto righthand-navigation">
 					{% if user.is_authenticated %}
 						<li class="nav-item dropdown">
-						    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></a>
+						    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ request.user.siteuser }}</a>
 						    <div class="dropdown-menu">
 						        <a class="dropdown-item" href="{% url 'blockchain:mine' %}">Mine</a>
 						        <div class="dropdown-divider"></div>
 						        <a class="dropdown-item" href="{% url 'siteuser:account_management' %}">My Account</a>
 						        <div class="dropdown-divider"></div>
 						        <a class="dropdown-item" href="{% url 'siteuser:edit_profile' %}">Edit Profile</a>
-						        <a class="dropdown-item" href="{% url 'blockchain:edit_alias' %}">Edit Account Alias</a>
+						        <a class="dropdown-item" href="{% url 'siteuser:edit_alias' %}">Edit Wallet Alias</a>
 						        <div class="dropdown-divider"></div>
 							    <a class="dropdown-item" href="{% url 'siteuser:password_change' %}">Change Password</a>
 							    <a class="dropdown-item" href="{% url 'siteuser:password_reset' %}">Reset Password</a>
@@ -150,10 +150,6 @@
 				</div>
 			</div>
 		</div>
-
-		{% block footer %}
-			{% include "footer.html" %}
-		{% endblock footer %}
 
 		{% endblock body %}
 

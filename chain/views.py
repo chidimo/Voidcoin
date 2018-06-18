@@ -10,10 +10,10 @@ import Crypto.Random
 # from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 
-from .blockchain_client import Transaction, COINBASE, MINING_DIFFICULTY, MINING_REWARD, MINABLE_TRANSACTIONS
-from .forms import InitiateTransactionForm, InitiateTransactionAuthUserForm, NodeRegistrationForm, EditAliasForm
+from siteuser.models import Wallet
 
-from .models import Wallet
+from .blockchain_client import Transaction, COINBASE, MINING_DIFFICULTY, MINING_REWARD, MINABLE_TRANSACTIONS
+from .forms import NodeRegistrationForm, InitiateTransactionAuthUserForm
 
 # Instantiate a blockchain
 BLOCKCHAIN = settings.BLOCKCHAIN
@@ -34,39 +34,6 @@ def index(request):
     context['unassigned'] = COINBASE - SUM_COINS
     context['mineable'] = MINABLE_TRANSACTIONS
     return render(request, template, context)
-
-def generate_wallet(request):
-    """Generate a new wallet"""
-    random_gen = Crypto.Random.new().read
-    pr_key = RSA.generate(1024, random_gen)
-    pub_key = pr_key.publickey()
-
-    private_key = binascii.hexlify(pr_key.exportKey(format='DER')).decode('ascii')
-    public_key = binascii.hexlify(pub_key.exportKey(format='DER')).decode('ascii')
-
-    # get balance of coins in the system
-    SUM_COINS = Wallet.objects.aggregate(total_balance=Sum('balance'))['total_balance']
-    # If no wallet instance has been created, the balance returns None
-    if SUM_COINS == None:
-        SUM_COINS = 0.00
-    if SUM_COINS < COINBASE:
-        balance = 50.00
-    else:
-        balance = 0.00
-
-    messages.success(request, "New wallet generated successfully.")
-    messages.success(request, "You have been assigned an initial coin balance of {}".format(balance))
-    if request.user.is_authenticated is False:
-        messages.error(request, "Copy your public and private keys and save them in a safe place at once as they cannot be recovered if lost")
-        messages.success(request, "Public key: {}".format(public_key))
-        messages.success(request, "Private key: {}".format(private_key))
-        return redirect('blockchain:index')
-    else:
-        messages.success(request, "You can view your account keys from your dashboard")
-        # save credentials to database
-        Wallet.objects.create(alias="Rename (30 characters)",
-            owner=request.user.siteuser, private_key=private_key, balance=balance, public_key=public_key)
-        return redirect('siteuser:account_management')
 
 def transactions_index(request):
     """View all transactions on the blockchain"""
@@ -158,7 +125,7 @@ def block_detail(request, index):
 
 def mine(request):
     if BLOCKCHAIN.mineable() is False:
-        messages.error(request, "At least three (3) transactions are needed to forge a block.")
+        messages.error(request, "At least {} transactions are needed to forge a block.".format(MINABLE_TRANSACTIONS))
         return redirect('blockchain:index')
 
     # get next proof from POW algorithm
@@ -171,8 +138,7 @@ def mine(request):
     # forge new block and add to chain
     previous_hash = BLOCKCHAIN.hash(last_block)
     BLOCKCHAIN.forge_block_and_add_to_chain(nonce, previous_hash)
-    messages.success(request, "Block mined successfully")
-    messages.success(request, "You have been rewarded with 0.25 coins")
+    messages.success(request, "Block mined successfully. You have been rewarded with 0.25 coins")
     return redirect('blockchain:index')
 
 def register_nodes(request):
@@ -222,27 +188,3 @@ def consensus(request):
     # return redirect('blockchain:node_index')
     return render(request, template, context)
 
-def edit_alias(request):
-    user = request.user
-    template = 'chain/edit_alias.html'
-
-    if request.method == 'POST':
-        form = EditAliasForm(request.POST, user=user)
-        if form.is_valid():
-            data = form.cleaned_data
-            alias = data['alias']
-            account = data['account']
-
-            account.alias = alias
-            account.save(update_fields=['alias'])
-            messages.success(request, "Wallet alias updated successfully")
-            return redirect('siteuser:account_management')
-        else:
-            return render(request, template, {'form' : form})
-    return render(request, template, {'form' : EditAliasForm(user=user)})
-
-def wallet_index(request):
-    template = 'chain/wallet_index.html'
-    context = {}
-    context['wallets'] = Wallet.objects.all()
-    return render(request, template, context)

@@ -4,11 +4,16 @@ from django.contrib import admin
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import CustomUser, SiteUser
+from .models import CustomUser, SiteUser, Wallet
 from .forms import UserChangeForm, UserCreationForm
 
 class SiteUserAdmin(admin.ModelAdmin):
     list_display = ("screen_name", "user", "slug")
+
+class WalletAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'alias', 'used', 'balance', 'private_key', 'public_key')
+
+admin.site.register(Wallet, WalletAdmin)
 
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm

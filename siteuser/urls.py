@@ -15,6 +15,12 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('wallet/new/', views.generate_wallet, name="generate_wallet"),
+    path('wallet/index/', views.wallet_index, name="wallet_index"),
+    path('edit-alias/', views.edit_alias, name="edit_alias"),
+]
+
+urlpatterns += [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('logout-then-login/', auth_views.logout_then_login, name='logout_then_login'),

@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import SiteUser
+from .models import SiteUser, Wallet
 
 CustomUser = get_user_model()
 
@@ -110,3 +110,25 @@ class PassWordGetterForm(forms.Form):
         if check_password(password, self.user.password) is False:
             self.add_error('password', 'You entered a wrong password')
 
+class EditAliasForm(forms.ModelForm):
+    class Meta:
+        model = Wallet
+        fields = ('alias', )
+
+        widgets = {'alias' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Account identifier'})}
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super(EditAliasForm, self).__init__(*args, **kwargs)
+        self.fields['account'].queryset = Wallet.objects.filter(owner__user=self.user)
+
+    account = forms.ModelChoiceField(
+        queryset=Wallet.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={'class' : 'form-control'}))
+
+    def clean(self):
+        alias = self.cleaned_data['alias']
+        aliases = Wallet.objects.filter(owner__user=self.user).values_list('alias', flat=True)
+        if alias in aliases:
+            self.add_error('alias', "You already have a wallet name {}".format(alias))

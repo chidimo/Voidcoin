@@ -14,6 +14,7 @@ See it in action [here](http://parousia.pythonanywhere.com/)
 1. User registration (optional). To keep things simple, registration only requires a user to provide an email
 (not necessarily valid, but format is important) and a unique screen name (for identification)
 1. Cannot transfer more coin than you have in your wallet
+1. Anybody can mine a block, but there must be at least 3 pending transactions before block can be mined.
 
 ## Views
 
@@ -54,7 +55,7 @@ Shows a user's account and all the wallets they own
 
 ## To do
 
-1. Activate recaptcha
 1. Subtract coin from sender. Add coin to receiver
+1. Add mining reward to miner wallet
 1. Limit total coin to amount in COINBASE
 
