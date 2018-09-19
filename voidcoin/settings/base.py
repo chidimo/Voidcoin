@@ -8,35 +8,20 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 
+from decouple import config, Csv
+
 from chain.blockchain_client import Blockchain
 
 BLOCKCHAIN = Blockchain()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-def get_env_variable(var_name):
-    """Get the environment variable or return exception"""
-    try:
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = "Set the {} environment variable".format(var_name)
-        raise ImproperlyConfigured(error_msg)
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 ROOT_URLCONF = 'voidcoin.urls'
-# SECRET_KEY = '-yj%bb6h89%&)&(=%didix35(gaag1&f*$73+=h5b3=v-1uy*p'
-SECRET_KEY = get_env_variable("SECRET_KEY")
+SECRET_KEY = config('SECRET_KEY')
+
 WSGI_APPLICATION = 'voidcoin.wsgi.application'
 INTERNAL_IPS = ('127.0.0.1', 'localhost')
-
-SITE_ID = 1
-
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = reverse_lazy('siteuser:login')
-LOGOUT_URL = reverse_lazy('siteuser:logout')
 
 MESSAGE_LEVEL = 10  # DEBUG
 MESSAGE_TAGS = {
@@ -49,9 +34,22 @@ MESSAGE_TAGS = {
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-DEFAULT_FROM_EMAIL = ''
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = 'voidcoin@outlook.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'voidcoin@outlook.com'
+
+LOGIN_URL = reverse_lazy('personnel:login')
+LOGOUT_URL = reverse_lazy('personnel:logout')
+LOGOUT_REDIRECT_URL = reverse_lazy('personnel:login')
+
+SITE_ID = 1
+PASSWORD_RESET_TIMEOUT_DAYS = 1
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = reverse_lazy('siteuser:login')
+LOGOUT_URL = reverse_lazy('siteuser:logout')
 
 # SHELL_PLUS_PRINT_SQL = True
 SHELL_PLUS_PYGMENTS_FORMATTER = pygments.formatters.TerminalFormatter
@@ -130,14 +128,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Asia/Dubai'
-
+TIME_ZONE = 'Africa/Lagos'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
+USE_THOUSAND_SEPARATOR = True
 
 
 # Static files (CSS, JavaScript, Images)

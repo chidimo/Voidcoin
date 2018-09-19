@@ -4,7 +4,7 @@ A blockchain implementation in `python` and `django`. It builds largely on the
 [this](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)
 and [this](http://adilmoujahid.com/posts/2018/03/intro-blockchain-bitcoin-python/) tutorials
 
-See it in action [here](http://parousia.pythonanywhere.com/)
+See it in action [here](http://voidcoin.pythonanywhere.com/)
 
 ## Features
 
@@ -58,4 +58,3 @@ Shows a user's account and all the wallets they own
 1. Subtract coin from sender. Add coin to receiver
 1. Add mining reward to miner wallet
 1. Limit total coin to amount in COINBASE
-
