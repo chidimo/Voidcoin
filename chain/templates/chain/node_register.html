@@ -1,11 +1,19 @@
 {% extends "voidcoin_base.html" %}
-{% block title %}Register new nodes{% endblock %}
+{% block title %}Register nodes{% endblock %}
 {% block introduction %}{% endblock introduction %}
 
 {% block content_content %}
+
+<h1>Register nodes</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/">Nodes</a></li>
+        <li class="breadcrumb-item active">Register nodes</li>
+    </ol>
+</nav>
 <div class="container upload-forms">
-    <h2>Register new nodes</h2>
-    <hr>
 
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}

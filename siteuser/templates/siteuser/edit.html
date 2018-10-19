@@ -4,9 +4,18 @@
 
 {% block content_content %}
 
+<h1>Edit profile</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Users</a></li>
+        <li class="breadcrumb-item active">Edit profile</li>
+    </ol>
+</nav>
+
+
 <div class="container upload-forms">
-    <h2>Edit your profile</h2>
-    <hr class='broad'>
     
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}

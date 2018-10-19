@@ -1,18 +1,21 @@
 {% extends "voidcoin_base.html" %}
 {% block title %}Transactions for next block{% endblock title %}
-{% block introduction %}{% endblock introduction %}
 {% load chain_templatetags %}
 
 {% block content_content %}
 
-<div class='container siteuser-index-heading'>
-    <div class='row'>
-        <h3 class='float-left'>Transactions for next block</h3>
-    </div>
-</div>
+<h1>Transactions for next block</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/">Transactions</a></li>
+        <li class="breadcrumb-item active">Transactions for next block</li>
+    </ol>
+</nav>
 
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-striped">
         <thead class="thead-dark">
             <caption>Transactions for next block</caption>
             <tr>
@@ -35,7 +38,7 @@
         {% empty %}
             <p>No pending transactions</p>
         {% endfor %}
-        <tr style="background:#a4a4ea">
+        <tr>
             <td>Sum</td>
             <td>{{ transactions|sum_amounts }}</td>
             <td></td>

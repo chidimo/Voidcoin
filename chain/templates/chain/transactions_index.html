@@ -5,14 +5,17 @@
 
 {% block content_content %}
 
-<div class='container siteuser-index-heading'>
-    <div class='row'>
-        <h3 class='float-left'>Transactions on the blockchain</h3>
-    </div>
-</div>
+<h1>Transactions on the blockchain</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Transactions on the blockchain</li>
+    </ol>
+</nav>
 
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-striped">
         <thead class="thead-dark">
             <caption>Transactions on the blockchain</caption>
             <tr>
@@ -34,7 +37,7 @@
         {% empty %}
             <p>No transactions made yet</p>
         {% endfor %}
-        <tr style="background:#a4a4ea">
+        <tr>
             <td>Sum</td>
             <td>{{ transactions|sum_amounts }}</td>
             <td></td>

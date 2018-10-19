@@ -5,11 +5,15 @@
 
 {% block content_content %}
 
-<div class='container siteuser-index-heading'>
-    <div class='row'>
-        <h3 class='float-left'>Block number {{ number }}</h3>
-    </div>
-</div>
+<h1>Block number {{ number }}</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Blocks</a></li>
+        <li class="breadcrumb-item active">Block number {{ number }}</li>
+    </ol>
+</nav>
 
 
 {% for key, value in block_items.items %}
@@ -38,7 +42,7 @@
                 {% empty %}
                     <p>No transaction in block</p>
                 {% endfor %}
-                <tr style="background:#a4a4ea">
+                <tr>
                     <td>Sum</td>
                     <td>{{ value|sum_amounts }}</td>
                     <td></td>

@@ -1,21 +1,8 @@
-/*https://colorswatches.info/*/
 body {
-  color: midnightblue;
-  padding-top: 2.4rem;
-  font-family: 'Inconsolata', monospace;
+  padding-top: 4.2rem;
 }
 
 /*NAVIGATION*/
-
-nav {
-  background: midnightblue;
-}
-
-.fixed-top {
-    font-size: 15px;
-    padding:0;
-    font-family: 'Inconsolata', monospace;
-}
 
 /* fix nav items scrolling in small screens */
 
@@ -27,142 +14,21 @@ nav {
     }
 }
 
-.fixed-top > a.navbar-brand {
-    margin-left: 1.5rem;
-    padding-top: 0;
-    padding-bottom: 0;
+.navbar-brand {
+    font-size: 28px;
 }
-
-.fixed-top > a.navbar-brand > h3 {
-    margin-bottom: .2rem;
-}
-
-.fixed-top > .navcontent {
-    padding-right: 2.5rem;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-.fixed-top > .navcontent > ul > li > a:hover {
-    background: #34348f;
-}
-
-.navbar-nav a {
-   color: #BCC6CC;
-   font-size: 15px;
-   font-weight: bold;
-}
-
-.navbar-nav .nav-link {
-    padding-right: 0;
-    padding-left: .65rem;
-}
-
-.navbar-nav .login-logout {
-    padding-right: 0;
-    padding-left: .675rem;
-    margin-bottom: .2rem;
-}
-
-.my-toggler.navbar-toggler {
-    border-color: rgb(250, 57, 57);
-}
-.my-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(250, 57, 57, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-}
-
-ul.nav > li.social-management {
-    padding: .35rem;
-}
-
 ul.righthand-navigation {
     padding: 0;
     margin-right: 8rem;
 }
 
-.logged-in-username {
-    height:auto;
-}
-
-.logged-in-username > a {
-    padding-bottom: 2rem;
-    margin-top: .025rem;
-}
-
-.logged-in-username > a:hover{
-    background: #34348f;
-}
-
-.profile-image > img {
-    height: 25px;
-    width: 25px;
-    /* padding:0; */
-}
-
-.profile-image {
-    float: left!important;
-}
-.profile-name {
-    padding-left: .3rem;
-    float: left!important;
-    /* padding-top: .2rem; */
-}
-
-.dropdown-menu > a.dropdown-item {
-    color: midnightblue;
-}
 /*GENERIC ELEMENTS*/
-
-h1, h2, h3, h4, h5, h6 {
-	color: midnightblue;
-	font-family: 'Inconsolata', monospace;
-}
-
-a {
-    color: #0062cc;
-}
-
-p, ol.terms-of-use li, ol.privacy-policy li, ol.help-page li {
-    font-family: 'Sunflower', sans-serif;
-}
 
 p.message-paragraph, p.key-display {
     word-break: break-all;
 }
 
-a:hover {
-   text-decoration: none;
-}
-
-.jumbotron {
-    margin-bottom: 0;
-    background: #cacaca;
-    border-radius: 0;
-}
-
-section.jumbotron {
-    border-radius: 0;
-}
-
-section a {
-    margin: 0.5rem 0 0.5rem 0.5rem;
-}
-
-label {
-  font-weight: bold;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid midnightblue;
-}
-
-.instant-search {
-  padding: 20px 0;
-}
-
 .content-block {
-  background-color: #cdd0d7;
   max-width: 1000px;
   margin: auto;
   box-shadow: 1px 3px 7px 3px #c4c7ce inset;
@@ -181,7 +47,6 @@ th {
   margin-top: 0.5rem;
   margin-bottom: 1.5rem;
   padding: 0 1rem 2.75rem 1rem;
-  background: #f0eeee;
   border: 1px solid #d7d7d7;
   border-radius: .15rem;
 }
@@ -196,32 +61,6 @@ th {
     width: 100%;
     font-size: 1.25rem;
     margin-bottom: 5rem;
-}
-
-.siteuser-index-heading {
-    background: #f2f3fb;
-    border: .6px solid midnightblue;
-    margin: .5rem 0;
-    border-radius: .15rem;
-    padding-bottom: .5rem;
-}
-
-.siteuser-index-heading h3, h5 {
-    margin-top: .6rem;
-    margin-left: .6rem;
-}
-
-.siteuser-index-details, .love-bird-detail {
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .15rem;
-    background: #fff;
-    color: midnightblue;
-}
-
-.siteuser-index-details > p.text-left, .love-bird-detail > p.text-left {
-    font-size: 14px;
-    margin-top: .25rem;
-    margin-bottom: 0;
 }
 
 .account-management-heading {
@@ -239,47 +78,10 @@ th {
     border-radius: .15rem;
 }
 
-.social-google {
-    background: #8ac2ff;
-    border-radius: .15rem;
-    height: 2.5rem;
-    margin-bottom: .5rem;
-}
-
-.social-google .login-using-icon-div {
-    color: white;
-    background: #3071d5;
-    border-top-left-radius: .2rem;
-    border-bottom-left-radius: .2rem;
-    width: 20%;
-}
-
-.social-google .login-using-icon {
-    font-size: 22px;
-    display: block;
-    width: 30%;
-    margin: auto;
-    padding-top: .25rem;
-}
-
-.social-google .login-using-text-div {
-    color: white;
-    font-family: 'Inconsolata', monospace;
-    background: #468dfa;
-    border-top-right-radius: .15rem;
-    border-bottom-right-radius: .15rem;
-    width: 80%;
-}
-
-.social-google .login-using-text {
-    display: block;
-}
-
 /* ADD ICONS TO LOGIN FORM FIELDS */
 
 .form-group {
   position: relative;
-  color: #aaa;
 }
 
 input#id_username {
@@ -299,7 +101,6 @@ input#id_password {
   top: 5px;
   left: 10px;
   font-size: 25px;
-  color: rebeccapurple;
   border-right: 1px solid #ccc;
   padding-right: 5px;
 }
@@ -309,13 +110,11 @@ input#id_password {
   top: 5px;
   left: 10px;
   font-size: 25px;
-  color: rebeccapurple;
   border-right: 1px solid #ccc;
   padding-right: 5px;
 }
 
 a.upload-button {
-    color: white;
     margin-right: .35rem;
     margin-top: .3rem;
 }
@@ -350,74 +149,10 @@ a.upload-button {
 .password-reset-conditions {
     border: 1px solid midnightblue;
     text-align: left;
-    color: red;
     border-radius: .15rem;
 }
 
 /*FOOTER*/
-
-.large-print {
-  padding: 40px 0;
-  background: #cacaca;
-}
-
-.large-print-item {
-  padding: 20px 10px;
-  text-align: left;
-}
-
-.feeds  {
-  padding: 30px 0;
-  background-color: silver;
-}
-
-.feeds > .container > .row {
-  text-align: center;
-}
-
-.fine-prints {
-  padding: 30px 0;
-}
-
-.copyright {
-  margin: 20px 0;
-}
-
-.feed-list {
-  list-style: none;
-  display: inline;
-}
-
-/*stripe table*/
-tbody tr:nth-child(even) {
-    background-color: #e3e3e3;
-}
-
-tbody tr:nth-child(odd) {
-    background-color: #efefef;
-}
-
-.table td {
-    padding: .2rem .5rem .2rem .5rem;
-    border-top: 0px;
-    word-break: break-all;
-}
-
-.table th {
-    padding: 0 .5rem 0 .5rem;
-    border-bottom: 1px solid;
-    color: #fff;
-    background-color: #212529;
-    border-color: #32383e;
-}
-
-.table {
-    margin-bottom: 0px;
-}
-
-.table tbody+tbody {
-    border: none;
-}
 
 .pagination {
     text-align: center;
@@ -438,9 +173,7 @@ a.icon-buttons, span.icon-buttons {
   font-size: 13px;
   font-weight: 600;
   line-height: 20px;
-  color: #007bff;
   vertical-align: middle;
-  background-color: #fff;
   border: 1px solid rgba(27,31,35,0.2);
   border-radius: 3px;
   margin: 2px 1px;
@@ -473,11 +206,4 @@ ul.errorlist {
     border: 1px solid #aaa;
     border-radius: .15rem;
     box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
-}
-
-.song-detail-header {
-    background: #f2f3fb;
-    border: .6px solid midnightblue;
-    margin: .5rem 0;
-    border-radius: .15rem;
 }

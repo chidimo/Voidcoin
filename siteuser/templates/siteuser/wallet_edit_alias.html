@@ -3,10 +3,19 @@
 {% block introduction %}{% endblock introduction %}
 
 {% block content_content %}
-<div class="container upload-forms">
-    <h2>Edit wallet alias</h2>
-    <hr>
 
+
+<h1>Edit wallet alias</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Wallets</a></li>
+        <li class="breadcrumb-item active">Edit wallet alias</li>
+    </ol>
+</nav>
+
+<div class="container upload-forms">
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

@@ -3,23 +3,62 @@
 {% block introduction %}{% endblock introduction %}
 
 {% block content_content %}
-<div class='container siteuser-index-heading'>
-    <div class='row'>
-        <h3 class='float-left'>VoidCoin home</h3>
-    </div>
-</div>
+<h1>VoidCoin</h1>
 
-<p><strong class="text-danger bold">Coin base:</strong> {{ coin_base }}, <strong class="text-danger">Remaining:</strong> {{ unassigned }}</p>
-<p>
-    <strong class="text-danger bold">Mining reward:</strong> {{ mining_reward }},
-    <strong class="text-danger bold">Mining difficulty:</strong> {{ mining_difficulty }},
-    <strong class="text-danger bold">Mineable transaction length:</strong> {{ mineable }}
-</p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+    </ol>
+</nav>
 
-<h4>Transactions for next block</h4>
+<h2>Block constraints</h2>
 
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Block constraints</caption>
+            <tr>
+                <th>S/No.</th>
+                <th>Constraint</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Coin base</td>
+                <td>{{ coin_base }}</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Remaining</td>
+                <td>{{ unassigned }}</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Mining reward</td>
+                <td>{{ mining_reward }}</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Mining difficulty</td>
+                <td>{{ mining_difficulty }}</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Mineable transaction length</td>
+                <td>{{ mineable }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<h2>Transactions for next block</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
         <thead class="thead-dark">
             <caption>Next block transactions</caption>
             <tr>
@@ -46,10 +85,10 @@
 
 <hr>
 
-<h4>Blocks on the chain</h4>
+<h2>Blocks on the chain</h2>
 
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-striped">
         <thead class="thead-dark">
             <caption>Blocks</caption>
             <tr>

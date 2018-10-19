@@ -13,7 +13,7 @@ from Crypto.PublicKey import RSA
 from siteuser.models import Wallet
 
 from .blockchain_client import Transaction, COINBASE, MINING_DIFFICULTY, MINING_REWARD, MINABLE_TRANSACTIONS
-from .forms import NodeRegistrationForm, InitiateTransactionAuthUserForm
+from .forms import NodeRegistrationForm, InitiateTransactionForm, InitiateTransactionAuthUserForm
 
 # Instantiate a blockchain
 BLOCKCHAIN = settings.BLOCKCHAIN
@@ -90,6 +90,7 @@ def transaction_auth_user(request):
             return render(request, template, {'form' : form})
     return render(request, template, {'form' : InitiateTransactionAuthUserForm(user=user)})
 
+@login_required
 def transaction_anon(request):
     """
     Initiate a transaction and send it to a blockchain node
