@@ -71,6 +71,7 @@ PREREQ_APPS = [
 PROJECT_APPS = [
     'chain',
     'siteuser',
+    'tags_and_filters',
 ]
 
 THIRD_PARTY_APPS = [

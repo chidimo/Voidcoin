@@ -1,0 +1,21 @@
+{% extends "voidcoin_base.html" %}
+{% block title %}Home{% endblock title %}
+{% block introduction %}{% endblock introduction %}
+
+{% load tags_and_filters %}
+{% block content_content %}
+<h1>VoidCoin</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+    </ol>
+</nav>
+
+<h2>README</h2>
+
+{{ text|markdown_format }}
+
+
+
+{% endblock content_content %}

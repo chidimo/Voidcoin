@@ -12,6 +12,7 @@ python-decouple = "*"
 requests = "*"
 django-extensions = "*"
 pycrypto = "*"
+markdown = "*"
 
 [dev-packages]
 pycryptodome = "*"

@@ -1,8 +1,6 @@
 # VoidCoin
 
-A blockchain implementation in `python` and `django`. It builds largely on the tutorials in the resources section.
-
-Theme by [Bootswatch](https://bootswatch.com/superhero/)
+A blockchain implementation in `python` and `django` as the backend. It builds largely on the sources linked in the resources section. Theme is by [Bootswatch](https://bootswatch.com/superhero/)
 
 See it in action <http://voidcoin.pythonanywhere.com/>
 
@@ -23,29 +21,29 @@ This view shows a list of all blocks on the blockchain. A list of all signed and
 
 ### Wallet Index
 
-This shows a list of all wallets in the system. The wallets are stored in a Django database with the following fields
+This view shows a list of all wallets in the system. The wallets are stored in a Django database with the following fields
 
-**alias:** Identifier to help a registered user differentiate between their various wallets. Must be unique for user
+`alias` Identifier to help a registered user differentiate between their various wallets. Must be unique for user
 
-**owner:** The registered user who creates the wallet. Field is auto-filled for logged in user
+`owner` The registered user who creates the wallet. Field is auto-filled for logged in user
 
-**public_key:** The wallet address or public key
+`public_key` The wallet address or public key
 
-**private_key:** The wallet private key. Only the user who owns this wallet can see this key, in their dashboard
+`private_key` The wallet private key. Only the user who owns this wallet can see this key, in their dashboard
 
-**balance:** The amount of coin balance in the wallet
+`balance` The amount of coin balance in the wallet
 
 ### Transactions Index
 
-This shows a list of every single transaction in the blockchain
+List of every single transaction in the blockchain
 
 ### Nodes index
 
-This shows a list of all registered nodes
+List of all registered nodes
 
 ### Account view
 
-Shows a user's account and all the wallets they own
+View user's account and all the wallets they own
 
 ## Resources
 
