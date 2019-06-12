@@ -1,11 +1,11 @@
 from .base import *
 import dj_database_url
 
-ENVIRONMENT = 'production'
 DEBUG = False
-DATABASES['default'] = dj_database_url.config(
-    default=DATABASE_URL
-)
+
+DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL)
+}
 
 
 MIDDLEWARE += [
