@@ -2,7 +2,7 @@
 
 A blockchain implementation in `python` and `django` as the backend. It builds largely on the sources linked in the resources section. Theme is by [Bootswatch](https://bootswatch.com/superhero/)
 
-See it in action <http://voidcoin.pythonanywhere.com/>
+See it in action <http://voidcoin.herokuapp.com/>
 
 ## Features
 
