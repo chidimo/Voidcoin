@@ -19,6 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 ROOT_URLCONF = 'voidcoin.urls'
 SECRET_KEY = config('SECRET_KEY')
+DATABASE_URL = config('DATABASE_URL')
 
 WSGI_APPLICATION = 'voidcoin.wsgi.application'
 INTERNAL_IPS = ('127.0.0.1', 'localhost')
@@ -142,6 +143,7 @@ USE_THOUSAND_SEPARATOR = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

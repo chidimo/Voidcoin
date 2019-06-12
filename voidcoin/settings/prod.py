@@ -1,13 +1,19 @@
 from .base import *
+import dj_database_url
 
-DEBUG = True
+ENVIRONMENT = 'production'
+DEBUG = False
+DATABASES['default'] = dj_database_url.config(
+    default=DATABASE_URL
+)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+
+MIDDLEWARE += [
+    # 'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

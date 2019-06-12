@@ -1,5 +1,10 @@
 # VoidCoin
 
+[![Build Status](https://travis-ci.com/chidimo/Voidcoin.svg?branch=develop)](https://travis-ci.com/chidimo/Voidcoin)
+[![Coverage Status](https://coveralls.io/repos/github/chidimo/Voidcoin/badge.svg?branch=develop)](https://coveralls.io/github/chidimo/Voidcoin?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c5e73349601b432ab1a5/maintainability)](https://codeclimate.com/github/chidimo/Voidcoin/maintainability)
+
+
 A blockchain implementation in `python` and `django` as the backend. It builds largely on the sources linked in the resources section. Theme is by [Bootswatch](https://bootswatch.com/superhero/)
 
 See it in action <http://voidcoin.pythonanywhere.com/>
