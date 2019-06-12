@@ -1,1 +1,1 @@
-web: gunicorn voidcoin.wsgi_prod
+web: gunicorn voidcoin.wsgi
